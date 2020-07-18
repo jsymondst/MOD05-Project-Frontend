@@ -1,5 +1,6 @@
 import React from "react";
 import { API_ROOT, HEADERS } from "../constants";
+import { Card, Button } from "semantic-ui-react";
 
 export default class GameListing extends React.Component {
     handleDelete = (e) => {
@@ -14,12 +15,13 @@ export default class GameListing extends React.Component {
     render() {
         const { name, id, created_at } = this.props.game;
         return (
-            <li>
-                {name}
-                <br />
-                created_at:{created_at}
-                <button onClick={this.handleDelete}>Delete Game</button>
-            </li>
+            <Card>
+                <Card.Content>
+                    <Card.Header>{name}</Card.Header>
+                    <Card.Meta>created_at:{created_at}</Card.Meta>
+                    <Button onClick={this.handleDelete}>Delete Game</Button>
+                </Card.Content>
+            </Card>
         );
     }
 }

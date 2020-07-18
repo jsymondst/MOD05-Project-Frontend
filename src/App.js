@@ -2,11 +2,12 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import GameList from "./components/GameList";
+import Lobby from "./components/Lobby";
 
 function App() {
     return (
         <div className="App">
-            <GameList />
+            <Lobby />
             {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
