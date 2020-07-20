@@ -34,7 +34,11 @@ export default class GameList extends React.Component {
         return (
             <>
                 {games.map((game) => (
-                    <GameListing game={game} key={game.id} />
+                    <GameListing
+                        game={game}
+                        key={game.id}
+                        gameListMethods={this.props.gameListMethods}
+                    />
                 ))}
             </>
         );
@@ -51,18 +55,13 @@ export default class GameList extends React.Component {
     };
 
     render = () => {
-        const { games } = this.props;
+        const { lobby_status } = this.props;
         return (
-            // <div className="game-list">
-            //     <ActionCable
-            //         channel={{ channel: "GamesChannel" }}
-            //         onReceived={this.handleReceivedGame}
-            //     />
-            //     {this.mapGames()}
-            //     <NewGameForm />
-            // </div>
+            <div>
+                <h2>Connected Players: {lobby_status.connections}</h2>
 
-            <Card.Group>{this.mapGames()}</Card.Group>
+                <Card.Group>{this.mapGames()}</Card.Group>
+            </div>
         );
     };
 }

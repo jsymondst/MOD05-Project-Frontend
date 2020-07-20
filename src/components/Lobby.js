@@ -1,10 +1,13 @@
 import React from "react";
 import { ActionCable } from "react-actioncable-provider";
+import { Grid } from "semantic-ui-react";
+
 import { API_ROOT } from "../constants";
+
 import NewGameForm from "./NewGameForm";
 import GameListing from "./GameListing";
 import GameList from "./GameList";
-import { Grid } from "semantic-ui-react";
+import GameView from "./GameView";
 
 // import MessagesArea from "./MessagesArea";
 // import Cable from "./Cable";
@@ -58,8 +61,19 @@ export default class Lobby extends React.Component {
         }
     };
 
+    joinGame = (gameID) => {
+        this.setState({
+            activeGameID: gameID,
+        });
+    };
+
     render = () => {
-        const { games } = this.state;
+        const { activeGameID, lobby_status } = this.state;
+
+        const gameListMethods = {
+            joinGame: this.joinGame,
+        };
+
         return (
             <div className="game-list">
                 <ActionCable
@@ -70,9 +84,17 @@ export default class Lobby extends React.Component {
                     <Grid.Column width={5}>
                         <NewGameForm />
                     </Grid.Column>
-                    <Grid.Column width={5}>
+                    <Grid.Column width={6}>
                         {/* {this.mapGames()} */}
-                        <GameList lobby_status={this.state.lobby_status} />
+                        <GameList
+                            lobby_status={lobby_status}
+                            gameListMethods={gameListMethods}
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={5}>
+                        {activeGameID ? (
+                            <GameView activeGameID={activeGameID} />
+                        ) : null}
                     </Grid.Column>
                 </Grid>
             </div>
