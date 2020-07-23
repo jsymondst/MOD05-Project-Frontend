@@ -1,0 +1,9 @@
+.tttCell {
+    height: 80px;
+    width: 80px;
+    border-style: dashed;
+    float: left;
+}
+.board {
+    width: 300px;
+}
