@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
+import { Icon, Button, Grid } from "semantic-ui-react";
 
 import { place, reset, selectTttGrid, selectTttTurn } from "./tictactoeSlice";
 import { selectActiveGameID } from "../../features/activeGame/activeGameSlice";
@@ -14,17 +15,23 @@ export const Tictactoe = (props) => {
     const dispatch = useDispatch();
     const turn = useSelector(selectTttTurn);
     const activeGameID = useSelector(selectActiveGameID);
+    const [winner, setWinner] = useState(null);
 
     const drawGrid = () => {
+        const selectIcon = {
+            X: <Icon name="cancel" color="blue" size="huge" />,
+            O: <Icon name="circle outline" color="red" size="huge" />,
+        };
+
         return grid.map((row, posY) => {
             return row.map((piece, posX) => {
                 return (
                     <div
+                        className={"tttCell ui middle aligned"}
                         key={`${posX}, ${posY}`}
-                        className={styles.tttCell}
                         onClick={() => handleTileClick(posX, posY)}
                     >
-                        {piece}
+                        {selectIcon[piece]}
                     </div>
                 );
             });
@@ -66,16 +73,17 @@ export const Tictactoe = (props) => {
     };
 
     const checkForWins = () => {
-        const winner = null;
+        let winner = null;
         for (let i = 0; i <= 2; i++) {
-            // check rows
             if (
+                // check rows
                 grid[i][0] == grid[i][1] &&
                 grid[i][1] == grid[i][2] &&
                 grid[i][0] != ""
             ) {
                 winner = grid[i][0];
             } else if (
+                //check columns
                 grid[0][i] == grid[1][i] &&
                 grid[1][i] == grid[2][i] &&
                 grid[0][i] != ""
@@ -83,9 +91,26 @@ export const Tictactoe = (props) => {
                 winner = grid[0][i];
             }
         }
-
+        //check diagonals
+        if (
+            grid[0][0] == grid[1][1] &&
+            grid[1][1] == grid[2][2] &&
+            grid[0][0] != ""
+        ) {
+            winner = grid[1][1];
+        } else if (
+            grid[0][2] == grid[1][1] &&
+            grid[1][1] == grid[2][0] &&
+            grid[0][0] != ""
+        ) {
+            winner = grid[1][1];
+        }
         return winner;
     };
+
+    useEffect(() => {
+        setWinner(checkForWins);
+    }, [grid]);
 
     const handleTileClick = (posX, posY) => {
         const payload = {
@@ -95,6 +120,7 @@ export const Tictactoe = (props) => {
         };
         dispatch(place(payload));
         // sendTurnAsMessage(payload);
+        console.log(grid);
 
         const action = {
             action: "place",
@@ -132,7 +158,8 @@ export const Tictactoe = (props) => {
                 onDisconnected={() => console.log("Turn Channel DCed")}
             />
             <h1>{turn}</h1>
-            <div className={styles.board}>{drawGrid()}</div>
+            <div className={"board"}>{drawGrid()}</div>
+            {winner ? <p>{winner} wins!</p> : null}
             <button onClick={handleReset}>Reset</button>
         </div>
     );

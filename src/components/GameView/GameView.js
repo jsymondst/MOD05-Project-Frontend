@@ -28,6 +28,12 @@ export const GameView = (props) => {
                 channel={{ channel: "TurnsChannel", game_id: activeGameID }}
                 // onReceived={console.log}
             />
+            <ActionCableConsumer
+                channel={{
+                    channel: "MessagesChannel",
+                    game_id: activeGameID,
+                }}
+            />
             <Grid>
                 <Grid.Column width={4}>
                     <InGameChat />
