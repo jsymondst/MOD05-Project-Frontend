@@ -19,23 +19,13 @@ export default class GameList extends React.Component {
         );
     };
 
-    // handleReceivedGame = (response) => {
-    //     console.log(response);
-    //     // const { games } = this.state;
-    //     if (response.lobby_status) {
-    //         this.setState({
-    //             games: response.lobby_status.games,
-    //         });
-    //     }
-    // };
-
     render = () => {
         const { lobbyStatus } = this.props;
         return (
             <div>
                 <h2>Connected Players: {lobbyStatus.connections}</h2>
 
-                <Card.Group>{this.mapGames()}</Card.Group>
+                <Card.Group centered>{this.mapGames()}</Card.Group>
             </div>
         );
     };

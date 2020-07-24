@@ -26,4 +26,10 @@ code {
 
 .board {
     width: 300px;
+    height: 300px;
+}
+
+.boardbox {
+    display: flex;
+    justify-content: center;
 }

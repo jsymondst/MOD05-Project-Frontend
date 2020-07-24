@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ActionCable } from "react-actioncable-provider";
+import { ActionCableConsumer } from "react-actioncable-provider";
 import { Grid } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -12,10 +12,7 @@ import {
 import { API_ROOT } from "../../constants";
 
 import NewGameForm from "../NewGameForm";
-import GameListing from "./GameListing";
 import GameList from "./GameList";
-import OldGameView from "../Unused/OldGameView";
-import GameView from "../GameView/GameView";
 
 const Lobby = () => {
     const [lobbyStatus, setLobbyStatus] = useState({
@@ -49,12 +46,16 @@ const Lobby = () => {
             setLobbyStatus({ ...lobbyStatus, games: games });
         }
     };
+    const handleGamesConnected = () => {
+        console.log("Lobby Connected");
+    };
 
     return (
         <div className="lobby">
-            <ActionCable
+            <ActionCableConsumer
                 channel={{ channel: "GamesChannel" }}
                 onReceived={handleReceivedGame}
+                onConnected={handleGamesConnected}
             />
             <Grid>
                 <Grid.Column width={5}>
@@ -65,7 +66,6 @@ const Lobby = () => {
                 </Grid.Column>
                 <Grid.Column width={5}></Grid.Column>
             </Grid>
-            {activeGameID ? <GameView /> : null}
         </div>
     );
 };

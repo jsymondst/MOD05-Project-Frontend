@@ -11,6 +11,7 @@ import {
 import InGameChat from "./InGameChat";
 import TicTacToe from "../../features/tictactoe/Tictactoe";
 import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
+import GameControls from "./GameControls";
 
 export const GameView = (props) => {
     const activeGameID = useSelector(selectActiveGameID);
@@ -22,8 +23,6 @@ export const GameView = (props) => {
 
     return (
         <div>
-            <h1>Connected to game #{activeGameID}</h1>
-            <Button onClick={handleLeave}>Leave Game</Button>
             <ActionCableConsumer
                 channel={{ channel: "TurnsChannel", game_id: activeGameID }}
                 // onReceived={console.log}
@@ -34,12 +33,15 @@ export const GameView = (props) => {
                     game_id: activeGameID,
                 }}
             />
-            <Grid>
+            <Grid padded>
                 <Grid.Column width={4}>
                     <InGameChat />
                 </Grid.Column>
-                <Grid.Column width={8}>
+                <Grid.Column width={8} centered>
                     <TicTacToe />
+                </Grid.Column>
+                <Grid.Column width={4}>
+                    <GameControls />
                 </Grid.Column>
             </Grid>
         </div>

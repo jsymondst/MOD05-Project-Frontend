@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
-import { Icon, Button, Grid } from "semantic-ui-react";
+import { Icon, Button, Grid, Divider, Segment } from "semantic-ui-react";
 
 import { place, reset, selectTttGrid, selectTttTurn } from "./tictactoeSlice";
-import { selectActiveGameID } from "../../features/activeGame/activeGameSlice";
+import {
+    selectActiveGameID,
+    setPlayer,
+    selectPlayerNumber,
+} from "../../features/activeGame/activeGameSlice";
 
 import { API_ROOT, HEADERS } from "../../constants";
 
@@ -15,27 +19,55 @@ export const Tictactoe = (props) => {
     const dispatch = useDispatch();
     const turn = useSelector(selectTttTurn);
     const activeGameID = useSelector(selectActiveGameID);
+    const playerNumber = useSelector(selectPlayerNumber);
     const [winner, setWinner] = useState(null);
 
     const drawGrid = () => {
+        return grid.map((row, posY) => {
+            return row.map((piece, posX) => {
+                return drawCell(piece, posX, posY);
+            });
+        });
+    };
+
+    const substituteIcon = (piece, size) => {
+        const selectIcon = {
+            X: <Icon name="cancel" color="blue" size={size} />,
+            O: <Icon name="circle outline" color="red" size={size} />,
+        };
+        return selectIcon[piece];
+    };
+
+    const myTurn = () => {
+        const key = {
+            X: 1,
+            O: 2,
+        };
+        return Number(playerNumber) === key[turn];
+    };
+
+    const drawCell = (piece, posX, posY) => {
         const selectIcon = {
             X: <Icon name="cancel" color="blue" size="huge" />,
             O: <Icon name="circle outline" color="red" size="huge" />,
         };
 
-        return grid.map((row, posY) => {
-            return row.map((piece, posX) => {
-                return (
-                    <div
-                        className={"tttCell ui middle aligned"}
-                        key={`${posX}, ${posY}`}
-                        onClick={() => handleTileClick(posX, posY)}
-                    >
-                        {selectIcon[piece]}
-                    </div>
-                );
-            });
-        });
+        const assignTileHandler = () => {
+            if (myTurn() && !winner) {
+                return () => handleTileClick(posX, posY);
+            }
+        };
+
+        return (
+            <div
+                className={"tttCell"}
+                key={`${posX}, ${posY}`}
+                onClick={!piece ? () => handleTileClick(posX, posY) : null}
+                // onClick={assignTileHandler()}
+            >
+                {substituteIcon(piece, "huge")}
+            </div>
+        );
     };
 
     const handleReset = (e) => {
@@ -56,7 +88,6 @@ export const Tictactoe = (props) => {
     };
 
     const sendTurnAsTurn = (turn) => {
-        const text = JSON.stringify(turn);
         fetch(`${API_ROOT}/turns`, {
             method: "POST",
             headers: HEADERS,
@@ -77,15 +108,15 @@ export const Tictactoe = (props) => {
         for (let i = 0; i <= 2; i++) {
             if (
                 // check rows
-                grid[i][0] == grid[i][1] &&
-                grid[i][1] == grid[i][2] &&
+                grid[i][0] === grid[i][1] &&
+                grid[i][1] === grid[i][2] &&
                 grid[i][0] != ""
             ) {
                 winner = grid[i][0];
             } else if (
                 //check columns
-                grid[0][i] == grid[1][i] &&
-                grid[1][i] == grid[2][i] &&
+                grid[0][i] === grid[1][i] &&
+                grid[1][i] === grid[2][i] &&
                 grid[0][i] != ""
             ) {
                 winner = grid[0][i];
@@ -93,14 +124,14 @@ export const Tictactoe = (props) => {
         }
         //check diagonals
         if (
-            grid[0][0] == grid[1][1] &&
-            grid[1][1] == grid[2][2] &&
+            grid[0][0] === grid[1][1] &&
+            grid[1][1] === grid[2][2] &&
             grid[0][0] != ""
         ) {
             winner = grid[1][1];
         } else if (
-            grid[0][2] == grid[1][1] &&
-            grid[1][1] == grid[2][0] &&
+            grid[0][2] === grid[1][1] &&
+            grid[1][1] === grid[2][0] &&
             grid[0][0] != ""
         ) {
             winner = grid[1][1];
@@ -109,25 +140,24 @@ export const Tictactoe = (props) => {
     };
 
     useEffect(() => {
-        setWinner(checkForWins);
+        setWinner(checkForWins());
     }, [grid]);
 
     const handleTileClick = (posX, posY) => {
-        const payload = {
-            posX,
-            posY,
-            piece: turn,
-        };
-        dispatch(place(payload));
-        // sendTurnAsMessage(payload);
-        console.log(grid);
+        if (myTurn()) {
+            const payload = {
+                posX,
+                posY,
+                piece: turn,
+            };
+            dispatch(place(payload));
 
-        const action = {
-            action: "place",
-            payload: payload,
-        };
-
-        sendTurnAsTurn(action);
+            const action = {
+                action: "place",
+                payload: payload,
+            };
+            sendTurnAsTurn(action);
+        }
     };
 
     const handleReceivedTurn = (response) => {
@@ -142,26 +172,35 @@ export const Tictactoe = (props) => {
                     break;
                 case "reset":
                     dispatch(reset());
+                    dispatch(setPlayer(null));
                     break;
                 default:
-                    console.error("invalid turn received");
+                    console.error("invalid tictactoe turn received");
             }
         }
     };
 
     return (
-        <div>
+        <Segment>
             <ActionCable
                 channel={{ channel: "TurnsChannel", game_id: activeGameID }}
                 onReceived={handleReceivedTurn}
-                onConnected={() => console.log("Turn Channel Connected")}
-                onDisconnected={() => console.log("Turn Channel DCed")}
+                onConnected={() => console.log("TTT Turn Channel Connected")}
+                onDisconnected={() => console.log("TTT Turn Channel DCed")}
             />
-            <h1>{turn}</h1>
-            <div className={"board"}>{drawGrid()}</div>
-            {winner ? <p>{winner} wins!</p> : null}
-            <button onClick={handleReset}>Reset</button>
-        </div>
+            <h1>
+                {substituteIcon(turn, "big")}
+                {myTurn() ? " True" : " False"}
+            </h1>
+            <div className="boardbox">
+                <div className={"board"}>{drawGrid()}</div>
+                <Divider />
+                <div>
+                    {winner ? <p>{winner} wins!</p> : null}
+                    <Button onClick={handleReset}>Reset</Button>
+                </div>
+            </div>
+        </Segment>
     );
 };
 
