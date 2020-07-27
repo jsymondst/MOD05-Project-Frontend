@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { API_ROOT, sendTurn } from "../../constants";
+import { API_ROOT, sendTurn, HEADERS } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -7,15 +7,20 @@ import {
     setPlayer,
     selectActiveGameID,
     selectPlayerNumber,
+    selectPlayerName,
+    selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 import { ActionCableConsumer } from "react-actioncable-provider";
 import { Button, Card, Segment, CardContent } from "semantic-ui-react";
 
+const faker = require("faker/locale/en_GB");
+
 const GameControls = () => {
     const dispatch = useDispatch();
     const playerNumber = useSelector(selectPlayerNumber);
+    const playerName = useSelector(selectPlayerName);
     const activeGameID = useSelector(selectActiveGameID);
-    const activeGameType = useSelector(selectActiveGameID);
+    const activeGameType = useSelector(selectActiveGameType);
     const [gameStatus, setGameStatus] = useState({
         connections: 0,
         name: null,
@@ -33,10 +38,31 @@ const GameControls = () => {
             payload: newPlayerNumber,
         };
 
-        sendTurn(activeGameID, action, "players", "Test message");
+        sendTurn(
+            activeGameID,
+            action,
+            "players",
+            `${playerName} chose to play as player ${newPlayerNumber}`
+        );
     };
 
-    const rollForTurns = (newPlayerNumber) => {};
+    const rollForTurns = () => {
+        let playerNumber = Math.ceil(Math.random() * 2);
+
+        dispatch(setPlayer(playerNumber));
+
+        const action = {
+            action: "chosePlayerNumber",
+            payload: playerNumber,
+        };
+
+        sendTurn(
+            activeGameID,
+            action,
+            "players",
+            `Randomly selected player ${playerNumber}`
+        );
+    };
 
     const handleReceivedTurn = (response) => {
         const { turn } = response;
@@ -112,6 +138,17 @@ const GameControls = () => {
         );
     };
 
+    const handleDisconnect = () => {
+        console.log("Controls Turn Channel DCed");
+        fetch(`${API_ROOT}/messages`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({
+                message: { text: "Disconnected", game_id: activeGameID },
+            }),
+        });
+    };
+
     return (
         <Card className={"GameControls"}>
             <ActionCableConsumer
@@ -120,7 +157,7 @@ const GameControls = () => {
                 onConnected={() =>
                     console.log("Controls Turn Channel Connected")
                 }
-                onDisconnected={() => console.log("Controls Turn Channel DCed")}
+                onDisconnected={handleDisconnect}
             />
 
             {drawGameStatusBlock()}

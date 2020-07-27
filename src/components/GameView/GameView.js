@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, Button } from "semantic-ui-react";
+import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
 
 import {
     join,
@@ -9,9 +10,9 @@ import {
 } from "../../features/activeGame/activeGameSlice";
 
 import InGameChat from "./InGameChat";
-import TicTacToe from "../../features/tictactoe/Tictactoe";
-import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
 import GameControls from "./GameControls";
+import TicTacToe from "../../features/tictactoe/Tictactoe";
+import ConnectFour from "../../features/connectFour/ConnectFour";
 
 export const GameView = (props) => {
     const activeGameID = useSelector(selectActiveGameID);
@@ -44,6 +45,7 @@ export const GameView = (props) => {
                     <GameControls />
                 </Grid.Column>
             </Grid>
+            <ConnectFour />
         </div>
     );
 };

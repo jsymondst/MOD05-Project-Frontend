@@ -1,43 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { API_ROOT, HEADERS } from "../../constants";
 import { Button, Icon, Input } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
-export default class NewMessageForm extends React.Component {
-    state = {
-        text: "",
+import {
+    leave,
+    setPlayer,
+    selectActiveGameID,
+    selectPlayerName,
+} from "../../features/activeGame/activeGameSlice";
+
+export const NewMessageForm = (props) => {
+    const playerName = useSelector(selectPlayerName);
+    const [text, setText] = useState();
+
+    const handleChange = (e) => {
+        setText(e.target.value);
     };
 
-    handleChange = (e) => {
-        this.setState({ text: e.target.value });
-    };
+    const handleSubmit = (e) => {
+        const { activeGameID } = props;
+        const messageBody = `${playerName}: ${text}`;
 
-    handleSubmit = (e) => {
-        const { text } = this.state;
-        const { activeGameID } = this.props;
         e.preventDefault();
         fetch(`${API_ROOT}/messages`, {
             method: "POST",
             headers: HEADERS,
-            body: JSON.stringify({ message: { text, game_id: activeGameID } }),
+            body: JSON.stringify({
+                message: { text: messageBody, game_id: activeGameID },
+            }),
         });
-        this.setState({ text: "" });
+
+        setText("");
     };
 
-    render = () => {
-        return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <Input
-                        type="text"
-                        value={this.state.text}
-                        onChange={this.handleChange}
-                        placeholder={"Chat..."}
-                    />
-                    <Button icon type="submit">
-                        <Icon name="send" />
-                    </Button>
-                </form>
-            </div>
-        );
-    };
-}
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <Input
+                    type="text"
+                    value={text}
+                    onChange={handleChange}
+                    placeholder={"Chat..."}
+                />
+                <Button icon type="submit">
+                    <Icon name="send" />
+                </Button>
+            </form>
+        </div>
+    );
+};
+
+export default NewMessageForm;

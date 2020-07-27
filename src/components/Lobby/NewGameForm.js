@@ -1,5 +1,5 @@
 import React from "react";
-import { API_ROOT, HEADERS } from "../constants";
+import { API_ROOT, HEADERS } from "../../constants";
 
 export default class NewGameForm extends React.Component {
     state = {

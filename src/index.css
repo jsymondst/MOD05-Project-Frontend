@@ -33,3 +33,32 @@ code {
     display: flex;
     justify-content: center;
 }
+
+.navbar {
+    text-align: center;
+    /* height: 100px; */
+    background-color: rgb(63, 142, 190);
+    font-family: "Courier New", Courier, monospace;
+    margin-bottom: 1em;
+}
+
+.c4Board {
+    width: 700px;
+    height: 600px;
+}
+.c4Column {
+    max-width: 80px;
+    float: left;
+}
+
+.c4cell {
+    height: 80px;
+    width: 80px;
+    border-style: dashed;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}

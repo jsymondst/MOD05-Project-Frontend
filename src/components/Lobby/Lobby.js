@@ -11,7 +11,7 @@ import {
 
 import { API_ROOT } from "../../constants";
 
-import NewGameForm from "../NewGameForm";
+import NewGameForm from "./NewGameFormNew";
 import GameList from "./GameList";
 
 const Lobby = () => {
@@ -57,7 +57,7 @@ const Lobby = () => {
                 onReceived={handleReceivedGame}
                 onConnected={handleGamesConnected}
             />
-            <Grid>
+            <Grid padded>
                 <Grid.Column width={5}>
                     <NewGameForm />
                 </Grid.Column>

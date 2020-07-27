@@ -1,7 +1,7 @@
 import React from "react";
 import { ActionCable } from "react-actioncable-provider";
 import { API_ROOT } from "../../constants";
-import NewGameForm from "../NewGameForm";
+
 import GameListing from "./GameListing";
 import { Card } from "semantic-ui-react";
 // import MessagesArea from "./MessagesArea";
