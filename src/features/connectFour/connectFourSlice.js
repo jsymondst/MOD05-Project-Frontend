@@ -8,19 +8,22 @@ export const connectFourSlice = createSlice({
         turn: "1",
     },
     reducers: {
-        place: (state, action) => {
+        connectFourPlace: (state, action) => {
             const { columnIndex, piece } = action.payload;
-            const turnSwitch = { red: "2", yellow: "1" };
-            const emptyColumn = ["", "", "", "", "", ""];
+            const turnSwitch = { red: "1", yellow: "2" };
             const oldColumn = state.grid[columnIndex];
             let newColumn = oldColumn.filter((space) => space !== "");
-            newColumn = [...newColumn, piece, ...emptyColumn];
-            newColumn.length = 6;
+            if (newColumn.length < 6) {
+                newColumn.push(piece);
+            }
+            while (newColumn.length < 6) {
+                newColumn.push("");
+            }
 
             state.grid[columnIndex] = newColumn;
             state.turn = turnSwitch[piece];
         },
-        reset: (state) => {
+        connectFourReset: (state) => {
             state.grid = emptyGrid;
             state.turn = "1";
         },

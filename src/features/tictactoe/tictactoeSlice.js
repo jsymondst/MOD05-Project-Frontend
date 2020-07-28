@@ -17,7 +17,7 @@ export const tictactoeSlice = createSlice({
             state.grid[posY][posX] = piece;
             state.turn = turnSwitch[piece];
         },
-        reset: (state) => {
+        tictactoeReset: (state) => {
             state.grid = [
                 ["", "", ""],
                 ["", "", ""],
@@ -28,7 +28,7 @@ export const tictactoeSlice = createSlice({
     },
 });
 
-export const { place, reset } = tictactoeSlice.actions;
+export const { place, tictactoeReset } = tictactoeSlice.actions;
 
 export const selectTttGrid = (state) => state.tictactoe.grid;
 export const selectTttTurn = (state) => state.tictactoe.turn;

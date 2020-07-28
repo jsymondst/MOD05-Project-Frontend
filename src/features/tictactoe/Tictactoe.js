@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
 import { Icon, Button, Grid, Divider, Segment } from "semantic-ui-react";
 
-import { place, reset, selectTttGrid, selectTttTurn } from "./tictactoeSlice";
+import {
+    place,
+    tictactoeReset,
+    selectTttGrid,
+    selectTttTurn,
+} from "./tictactoeSlice";
+
 import {
     selectActiveGameID,
     setPlayer,
@@ -60,6 +66,7 @@ export const Tictactoe = (props) => {
 
         return (
             <div
+                // className={myTurn() ? "tttCell active" : "tttCell"}
                 className={"tttCell"}
                 key={`${posX}, ${posY}`}
                 onClick={!piece ? () => handleTileClick(posX, posY) : null}
@@ -70,24 +77,7 @@ export const Tictactoe = (props) => {
         );
     };
 
-    const handleReset = (e) => {
-        const action = {
-            action: "reset",
-        };
-        sendTurnAsTurn(action);
-        dispatch(reset());
-    };
-
-    const sendTurnAsMessage = (turn) => {
-        const text = JSON.stringify(turn);
-        fetch(`${API_ROOT}/messages`, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify({ message: { text, game_id: activeGameID } }),
-        });
-    };
-
-    const sendTurnAsTurn = (turn) => {
+    const sendTictactoeTurn = (turn) => {
         fetch(`${API_ROOT}/turns`, {
             method: "POST",
             headers: HEADERS,
@@ -156,7 +146,7 @@ export const Tictactoe = (props) => {
                 action: "place",
                 payload: payload,
             };
-            sendTurnAsTurn(action);
+            sendTictactoeTurn(action);
         }
     };
 
@@ -171,7 +161,7 @@ export const Tictactoe = (props) => {
                     dispatch(place(action.payload));
                     break;
                 case "reset":
-                    dispatch(reset());
+                    dispatch(tictactoeReset());
                     dispatch(setPlayer(null));
                     break;
                 default:
@@ -180,8 +170,23 @@ export const Tictactoe = (props) => {
         }
     };
 
+    const headerSection = () => {
+        if (!playerNumber) {
+            return <h1>Select a player</h1>;
+        } else if (winner) {
+            return (
+                <h1>
+                    {substituteIcon(winner, "big")}
+                    {` Wins!`}
+                </h1>
+            );
+        } else {
+            return <h1>{substituteIcon(turn, "big")}</h1>;
+        }
+    };
+
     return (
-        <Segment>
+        <Segment centered>
             <ActionCable
                 channel={{ channel: "TurnsChannel", game_id: activeGameID }}
                 onReceived={handleReceivedTurn}
@@ -192,13 +197,9 @@ export const Tictactoe = (props) => {
                 {substituteIcon(turn, "big")}
                 {myTurn() ? " True" : " False"}
             </h1>
+            {headerSection()}
             <div className="boardbox">
                 <div className={"board"}>{drawGrid()}</div>
-                <Divider />
-                <div>
-                    {winner ? <p>{winner} wins!</p> : null}
-                    <Button onClick={handleReset}>Reset</Button>
-                </div>
             </div>
         </Segment>
     );
@@ -237,4 +238,21 @@ export default Tictactoe;
 //             <button type="submit">Place</button>
 //         </form>
 //     );
+// };
+
+// const handleReset = (e) => {
+//     const action = {
+//         action: "reset",
+//     };
+//     sendTictactoeTurn(action);
+//     dispatch(tictactoeReset());
+// };
+
+// const sendTurnAsMessage = (turn) => {
+//     const text = JSON.stringify(turn);
+//     fetch(`${API_ROOT}/messages`, {
+//         method: "POST",
+//         headers: HEADERS,
+//         body: JSON.stringify({ message: { text, game_id: activeGameID } }),
+//     });
 // };

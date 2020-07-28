@@ -12,7 +12,8 @@ export const activeGameSlice = createSlice({
     },
     reducers: {
         join: (state, action) => {
-            state.gameID = action.payload;
+            state.gameID = action.payload.id;
+            state.gameType = action.payload.gameType;
         },
         leave: (state) => {
             state.gameID = null;
