@@ -3,7 +3,7 @@ import { ActionCable } from "react-actioncable-provider";
 import { API_ROOT } from "../../constants";
 
 import GameListing from "./GameListing";
-import { Card } from "semantic-ui-react";
+import { Card, Segment } from "semantic-ui-react";
 // import MessagesArea from "./MessagesArea";
 // import Cable from "./Cable";
 
@@ -25,7 +25,9 @@ export default class GameList extends React.Component {
             <div>
                 <h2>Connected Players: {lobbyStatus.connections}</h2>
 
-                <Card.Group centered>{this.mapGames()}</Card.Group>
+                <Card.Group centered fluid>
+                    {this.mapGames()}
+                </Card.Group>
             </div>
         );
     };

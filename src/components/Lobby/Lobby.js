@@ -11,7 +11,7 @@ import {
 
 import { API_ROOT } from "../../constants";
 
-import NewGameForm from "./NewGameFormNew";
+import NewGameForm from "./NewGameForm";
 import GameList from "./GameList";
 
 const Lobby = () => {

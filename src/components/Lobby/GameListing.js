@@ -3,14 +3,10 @@ import { API_ROOT, HEADERS } from "../../constants";
 import { Card, Button, ButtonGroup } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 
-import {
-    join,
-    leave,
-    selectActiveGameID,
-} from "../../features/activeGame/activeGameSlice";
+import { join } from "../../features/activeGame/activeGameSlice";
 
 const GameListing = (props) => {
-    const { name, id, created_at, connection_count } = props.game;
+    const { name, id, created_at, connection_count, game_type } = props.game;
     const dispatch = useDispatch();
 
     const handleDelete = () => {
@@ -21,11 +17,20 @@ const GameListing = (props) => {
     };
 
     const handleJoin = () => {
-        dispatch(join(props.game.id));
+        const payload = {
+            id: id,
+            gameType: game_type,
+        };
+        dispatch(join(payload));
+    };
+
+    const gameTypesKey = {
+        tictactoe: "Tic Tac Toe",
+        connectFour: "Connect Four",
     };
 
     return (
-        <Card>
+        <Card fluid>
             <Card.Content>
                 <Card.Header>{name}</Card.Header>
                 <Card.Meta>created_at:{created_at}</Card.Meta>
@@ -33,15 +38,18 @@ const GameListing = (props) => {
                 <Card.Description>
                     Connected players: {connection_count}
                 </Card.Description>
+                <Card.Description>
+                    Type: {gameTypesKey[game_type]}
+                </Card.Description>
                 <br />
-                <ButtonGroup>
-                    <Button onClick={handleJoin} basic color="green">
+                <Button.Group widths="2">
+                    <Button onClick={handleJoin} color="green">
                         Join Game
                     </Button>
-                    <Button onClick={handleDelete} basic color="red">
+                    <Button onClick={handleDelete} color="red">
                         Delete Game
                     </Button>
-                </ButtonGroup>
+                </Button.Group>
             </Card.Content>
         </Card>
     );
