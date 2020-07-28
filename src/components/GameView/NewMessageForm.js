@@ -12,7 +12,7 @@ import {
 
 export const NewMessageForm = (props) => {
     const playerName = useSelector(selectPlayerName);
-    const [text, setText] = useState();
+    const [text, setText] = useState("");
 
     const handleChange = (e) => {
         setText(e.target.value);
@@ -21,31 +21,35 @@ export const NewMessageForm = (props) => {
     const handleSubmit = (e) => {
         const { activeGameID } = props;
         const messageBody = `${playerName}: ${text}`;
-
         e.preventDefault();
-        fetch(`${API_ROOT}/messages`, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify({
-                message: { text: messageBody, game_id: activeGameID },
-            }),
-        });
+        if (text !== "") {
+            fetch(`${API_ROOT}/messages`, {
+                method: "POST",
+                headers: HEADERS,
+                body: JSON.stringify({
+                    message: { text: messageBody, game_id: activeGameID },
+                }),
+            });
 
-        setText("");
+            setText("");
+        }
     };
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <Input
+                    fluid
                     type="text"
                     value={text}
                     onChange={handleChange}
                     placeholder={"Chat..."}
-                />
-                <Button icon type="submit">
-                    <Icon name="send" />
-                </Button>
+                    action={{
+                        icon: "send",
+                        type: "submit",
+                    }}
+                    actionPosition="left"
+                ></Input>
             </form>
         </div>
     );

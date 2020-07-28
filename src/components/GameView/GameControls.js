@@ -11,7 +11,19 @@ import {
     selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 import { ActionCableConsumer } from "react-actioncable-provider";
-import { Button, Card, Segment, CardContent } from "semantic-ui-react";
+import {
+    Button,
+    Card,
+    Segment,
+    CardContent,
+    Icon,
+    Divider,
+    ButtonGroup,
+    Header,
+} from "semantic-ui-react";
+
+import { connectFourReset } from "../../features/connectFour/connectFourSlice";
+import { tictactoeReset } from "../../features/tictactoe/tictactoeSlice";
 
 const faker = require("faker/locale/en_GB");
 
@@ -41,7 +53,7 @@ const GameControls = () => {
         sendTurn(
             activeGameID,
             action,
-            "players",
+            "controls",
             `${playerName} chose to play as player ${newPlayerNumber}`
         );
     };
@@ -59,7 +71,7 @@ const GameControls = () => {
         sendTurn(
             activeGameID,
             action,
-            "players",
+            "controls",
             `Randomly selected player ${playerNumber}`
         );
     };
@@ -68,7 +80,7 @@ const GameControls = () => {
         const { turn } = response;
         if (turn && turn.game_type) {
             switch (turn.game_type) {
-                case "players":
+                case "controls":
                     const action = JSON.parse(turn.action);
                     switch (action.action) {
                         case "chosePlayerNumber":
@@ -77,8 +89,11 @@ const GameControls = () => {
                                 dispatch(setPlayer(turnSwitch[action.payload]));
                             }
                             break;
+                        case "reset":
+                            resetAllGames();
+                            break;
                         default:
-                            console.error("invalid players turn received");
+                            console.error("invalid controls turn received");
                     }
                     break;
                 case "game_status":
@@ -93,26 +108,45 @@ const GameControls = () => {
         }
     };
 
+    const resetAllGames = () => {
+        dispatch(connectFourReset());
+        dispatch(tictactoeReset());
+        dispatch(setPlayer(null));
+    };
+
     const handleNewGame = () => {
         const action = {
             action: "reset",
         };
-        sendTurn(activeGameID, action, "tictactoe", null);
+        sendTurn(activeGameID, action, "controls", null);
     };
 
     const requestGameStatus = () => {
         fetch(`${API_ROOT}/games/${activeGameID}`);
     };
 
-    useEffect(requestGameStatus, []);
+    const joinGameTriggers = () => {
+        requestGameStatus();
+        resetAllGames();
+    };
+
+    useEffect(joinGameTriggers, []);
 
     const drawGameStatusBlock = () => {
         return (
             <>
                 <Card.Content>
-                    <Card.Header padded>{gameStatus.name}</Card.Header>
-                    <Card.Meta padded>game #{activeGameID}</Card.Meta>
-                    <Card.Description>
+                    <Button.Group floated="right">
+                        <Button onClick={handleNewGame} color="violet">
+                            New Game
+                        </Button>
+                        <Button onClick={handleLeave} color="orange">
+                            Leave Game
+                        </Button>
+                    </Button.Group>
+                    <Card.Header floated="left">{gameStatus.name}</Card.Header>
+                    <Card.Meta>game #{activeGameID}</Card.Meta>
+                    <Card.Description floated="left">
                         Connected players: {gameStatus.connections}
                     </Card.Description>
                 </Card.Content>
@@ -122,19 +156,37 @@ const GameControls = () => {
 
     const drawChoosePlayerblock = () => {
         return playerNumber ? (
-            <h3>{`Playing as ${playerNumber}`}</h3>
+            <Card.Content>
+                <h3>{`Playing as ${playerNumber}`}</h3>
+            </Card.Content>
         ) : (
-            <>
-                <h3>{"Select a piece"}</h3>
-                <Button onClick={() => assignPlayer(1)} padded>
-                    Play as player 1
-                </Button>
-                <br />
-                <Button onClick={() => assignPlayer(2)} padded>
-                    Play as player 2
-                </Button>
-                <br />
-            </>
+            <Card.Content>
+                <div style={{ float: "left", "margin-right": "0.5em" }}>
+                    <h3>{"Play as: "}</h3>
+                </div>
+                <div style={{ float: "left" }}>
+                    <Button.Group>
+                        <Button
+                            onClick={() => assignPlayer(1)}
+                            padded
+                            color="yellow"
+                        >
+                            Player 1
+                        </Button>
+                        <Button onClick={rollForTurns} color="green">
+                            <Icon name="random" />
+                            Random
+                        </Button>
+                        <Button
+                            onClick={() => assignPlayer(2)}
+                            padded
+                            color="red"
+                        >
+                            Player 2
+                        </Button>
+                    </Button.Group>
+                </div>
+            </Card.Content>
         );
     };
 
@@ -150,7 +202,7 @@ const GameControls = () => {
     };
 
     return (
-        <Card className={"GameControls"}>
+        <Card fluid>
             <ActionCableConsumer
                 channel={{ channel: "TurnsChannel", game_id: activeGameID }}
                 onReceived={handleReceivedTurn}
@@ -161,18 +213,7 @@ const GameControls = () => {
             />
 
             {drawGameStatusBlock()}
-            <Card.Content>
-                {drawChoosePlayerblock()}
-
-                <br />
-                <Button onClick={handleLeave} padded>
-                    Leave Game
-                </Button>
-                <br />
-                <Button onClick={handleNewGame} padded>
-                    New Game
-                </Button>
-            </Card.Content>
+            {drawChoosePlayerblock()}
         </Card>
     );
 };
