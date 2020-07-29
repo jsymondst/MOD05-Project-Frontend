@@ -193,10 +193,6 @@ export const Tictactoe = (props) => {
                 onConnected={() => console.log("TTT Turn Channel Connected")}
                 onDisconnected={() => console.log("TTT Turn Channel DCed")}
             />
-            <h1>
-                {substituteIcon(turn, "big")}
-                {myTurn() ? " True" : " False"}
-            </h1>
             {headerSection()}
             <div className="boardbox">
                 <div className={"board"}>{drawGrid()}</div>

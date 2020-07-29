@@ -77,6 +77,7 @@ const GameControls = () => {
     };
 
     const handleReceivedTurn = (response) => {
+        console.log(response);
         const { turn } = response;
         if (turn && turn.game_type) {
             switch (turn.game_type) {
@@ -100,6 +101,7 @@ const GameControls = () => {
                     setGameStatus({
                         connections: turn.action.connections,
                         name: turn.action.name,
+                        closed: turn.action.closed,
                     });
                     break;
                 default:
@@ -132,11 +134,35 @@ const GameControls = () => {
 
     useEffect(joinGameTriggers, []);
 
+    const handleDisconnect = () => {
+        console.log("Controls Turn Channel DCed");
+        // fetch(`${API_ROOT}/messages`, {
+        //     method: "POST",
+        //     headers: HEADERS,
+        //     body: JSON.stringify({
+        //         message: { text: "Disconnected", game_id: activeGameID },
+        //     }),
+        // });
+    };
+
+    const handleCloseGame = () => {
+        fetch(`${API_ROOT}/games/close/${activeGameID}`, {
+            method: "POST",
+            headers: HEADERS,
+            // body: JSON.stringify({
+            //     message: { text: "Disconnected", game_id: activeGameID },
+            // }),
+        });
+    };
+
     const drawGameStatusBlock = () => {
         return (
             <>
                 <Card.Content>
                     <Button.Group floated="right">
+                        <Button onClick={handleCloseGame} color="blue">
+                            Close game
+                        </Button>
                         <Button onClick={handleNewGame} color="violet">
                             New Game
                         </Button>
@@ -148,6 +174,9 @@ const GameControls = () => {
                     <Card.Meta>game #{activeGameID}</Card.Meta>
                     <Card.Description floated="left">
                         Connected players: {gameStatus.connections}
+                    </Card.Description>
+                    <Card.Description floated="left">
+                        Closed: {gameStatus.closed ? "True" : "False"}
                     </Card.Description>
                 </Card.Content>
             </>
@@ -188,17 +217,6 @@ const GameControls = () => {
                 </div>
             </Card.Content>
         );
-    };
-
-    const handleDisconnect = () => {
-        console.log("Controls Turn Channel DCed");
-        fetch(`${API_ROOT}/messages`, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify({
-                message: { text: "Disconnected", game_id: activeGameID },
-            }),
-        });
     };
 
     return (

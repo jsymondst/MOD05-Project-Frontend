@@ -23,8 +23,7 @@ export default class GameList extends React.Component {
         const { lobbyStatus } = this.props;
         return (
             <div>
-                <h2>Connected Players: {lobbyStatus.connections}</h2>
-
+                {/* <h2>Connected Players: {lobbyStatus.connections}</h2> */}
                 <Card.Group centered fluid>
                     {this.mapGames()}
                 </Card.Group>

@@ -22,6 +22,8 @@ export const sendTurn = (gameID, turn, gameType, message) => {
     // .then(console.log);
 };
 
+export const rubyDateToHhMm = (rubyDateString) => {};
+
 export const randomAnimal = () => {
     const animals = [
         "Aardvark",

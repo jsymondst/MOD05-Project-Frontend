@@ -30,7 +30,6 @@ const NewGameForm = () => {
             body: JSON.stringify({ game: { name, game_type: type } }),
         });
         setName("");
-        setType("");
     };
 
     const typeBox = () => {
@@ -40,32 +39,39 @@ const NewGameForm = () => {
         ];
         return (
             <>
-                <br />
-                <Label>Game Type</Label>
-                <Dropdown
-                    label={"Game Type"}
-                    labelled
-                    options={gameOptions}
-                    defaultValue="tictactoe"
-                    selection
-                    onChange={handleChangeType}
-                ></Dropdown>
+                <Form.Field>
+                    <label>Game Type</label>
+                    <Dropdown
+                        label={"Game Type"}
+                        labelled
+                        options={gameOptions}
+                        defaultValue="tictactoe"
+                        selection
+                        onChange={handleChangeType}
+                    ></Dropdown>
+                </Form.Field>
             </>
         );
     };
 
     return (
-        <Segment padded fluid>
+        <Segment padded fluid textAlign="left">
             <Form fluid onSubmit={handleSubmit}>
                 <h2>New Game:</h2>
-                <Label>Game Name</Label>
-                <Input type="text" value={name} onChange={handleChangeName} />
-                <br />
+                <Form.Field>
+                    <label>Game Name</label>
+                    <Input
+                        type="text"
+                        value={name}
+                        onChange={handleChangeName}
+                    />
+                </Form.Field>
+
                 {typeBox()}
                 <br />
-                <br />
-
-                <Button type="submit">Create Game</Button>
+                <Form.Button type="submit" fluid>
+                    Create Game
+                </Form.Button>
             </Form>
         </Segment>
     );

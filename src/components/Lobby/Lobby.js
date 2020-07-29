@@ -7,12 +7,15 @@ import {
     join,
     leave,
     selectActiveGameID,
+    selectPlayerName,
 } from "../../features/activeGame/activeGameSlice";
 
 import { API_ROOT } from "../../constants";
 
 import NewGameForm from "./NewGameForm";
 import GameList from "./GameList";
+import InGameChat from "../GameView/InGameChat";
+import LobbyChat from "./LobbyChat";
 
 const Lobby = () => {
     const [lobbyStatus, setLobbyStatus] = useState({
@@ -21,6 +24,7 @@ const Lobby = () => {
     });
 
     const activeGameID = useSelector(selectActiveGameID);
+    const name = useSelector(selectPlayerName);
 
     const fetchLobby = () => {
         fetch(`${API_ROOT}/games`)
@@ -64,7 +68,10 @@ const Lobby = () => {
                 <Grid.Column width={6}>
                     <GameList lobbyStatus={lobbyStatus} />
                 </Grid.Column>
-                <Grid.Column width={5}></Grid.Column>
+                <Grid.Column width={5}>
+                    {/* <LobbyChat name={name} /> */}
+                    <InGameChat gameID={1} />
+                </Grid.Column>
             </Grid>
         </div>
     );

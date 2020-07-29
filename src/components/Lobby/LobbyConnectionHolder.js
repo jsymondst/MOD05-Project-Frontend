@@ -1,6 +1,6 @@
 import React from "react";
 import { ActionCableConsumer } from "react-actioncable-provider";
-import { API_ROOT } from "../../constants";
+// import { API_ROOT } from "../../constants";
 import Lobby from "./Lobby";
 
 export default class LobbyConnectionHolder extends React.Component {
@@ -8,6 +8,13 @@ export default class LobbyConnectionHolder extends React.Component {
         return (
             <>
                 <ActionCableConsumer channel={{ channel: "GamesChannel" }} />
+                <ActionCableConsumer
+                    channel={{
+                        channel: "MessagesChannel",
+                        game_id: 1,
+                    }}
+                />
+
                 <Lobby />
             </>
         );
