@@ -19,6 +19,7 @@ import {
 import { API_ROOT, HEADERS } from "../../constants";
 
 import styles from "./Tictactoe.module.css";
+import PlayerControls from "../../components/GameView/PlayerControls";
 
 export const Tictactoe = (props) => {
     const grid = useSelector(selectTttGrid);
@@ -186,18 +187,23 @@ export const Tictactoe = (props) => {
     };
 
     return (
-        <Segment centered>
-            <ActionCable
-                channel={{ channel: "TurnsChannel", game_id: activeGameID }}
-                onReceived={handleReceivedTurn}
-                onConnected={() => console.log("TTT Turn Channel Connected")}
-                onDisconnected={() => console.log("TTT Turn Channel DCed")}
-            />
-            {headerSection()}
-            <div className="boardbox">
-                <div className={"board"}>{drawGrid()}</div>
-            </div>
-        </Segment>
+        <Segment.Group centered>
+            <Segment>
+                <ActionCable
+                    channel={{ channel: "TurnsChannel", game_id: activeGameID }}
+                    onReceived={handleReceivedTurn}
+                    onConnected={() =>
+                        console.log("TTT Turn Channel Connected")
+                    }
+                    onDisconnected={() => console.log("TTT Turn Channel DCed")}
+                />
+                {headerSection()}
+                <div className="boardbox">
+                    <div className={"board"}>{drawGrid()}</div>
+                </div>
+            </Segment>
+            <PlayerControls myTurn={myTurn()} />
+        </Segment.Group>
     );
 };
 

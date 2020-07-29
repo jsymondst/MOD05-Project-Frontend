@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Segment, Divider, Comment } from "semantic-ui-react";
 import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
+import moment from "moment";
+
 import { API_ROOT, HEADERS } from "../../constants";
 
 import {
@@ -20,6 +22,7 @@ export const InGameChat = (props) => {
 
     const handleReceivedMessage = (response) => {
         setMessages([...messages, response]);
+        console.log(moment(response.created_at));
     };
 
     const handleConnected = () => {
@@ -42,14 +45,20 @@ export const InGameChat = (props) => {
     // useEffect(() => {}, [messages]);
 
     const drawMessage = (message) => {
+        const { username, created_at, text } = message;
+        const messageTime = moment(created_at).format("h:mm a");
         return (
             <Comment>
                 <Comment.Content>
-                    <Comment.Author>{message.username}</Comment.Author>
-                    <Comment.Metadata>
-                        <div>{message.created_at}</div>
-                    </Comment.Metadata>
-                    <Comment.Text>{message.text}</Comment.Text>
+                    <div style={{ float: "left" }}>
+                        <Comment.Author>{username}</Comment.Author>
+                    </div>
+                    <div style={{ float: "left" }}>
+                        <Comment.Metadata>{messageTime}</Comment.Metadata>
+                    </div>
+                    <div style={{ clear: "left" }}>
+                        <Comment.Text>{text}</Comment.Text>
+                    </div>
                 </Comment.Content>
             </Comment>
         );
@@ -65,7 +74,7 @@ export const InGameChat = (props) => {
                 onReceived={handleReceivedMessage}
                 onConnected={handleConnected}
             />
-            <Segment>
+            <Segment textAlign="left">
                 {/* <ul>
                     {messages.map((message) => {
                         return <li key={message.id}>{message.text}</li>;

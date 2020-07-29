@@ -25,8 +25,6 @@ import {
 import { connectFourReset } from "../../features/connectFour/connectFourSlice";
 import { tictactoeReset } from "../../features/tictactoe/tictactoeSlice";
 
-const faker = require("faker/locale/en_GB");
-
 const GameControls = () => {
     const dispatch = useDispatch();
     const playerNumber = useSelector(selectPlayerNumber);
@@ -231,7 +229,7 @@ const GameControls = () => {
             />
 
             {drawGameStatusBlock()}
-            {drawChoosePlayerblock()}
+            {/* {drawChoosePlayerblock()} */}
         </Card>
     );
 };

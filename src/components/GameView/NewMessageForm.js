@@ -27,7 +27,13 @@ export const NewMessageForm = (props) => {
                 method: "POST",
                 headers: HEADERS,
                 body: JSON.stringify({
-                    message: { text: messageBody, game_id: activeGameID },
+                    // message: { text: messageBody, game_id: activeGameID , message_type:"chat", username:playerName},
+                    message: {
+                        text: text,
+                        game_id: activeGameID,
+                        message_type: "chat",
+                        username: playerName,
+                    },
                 }),
             });
 

@@ -24,6 +24,7 @@ import {
 } from "../activeGame/activeGameSlice";
 
 import { API_ROOT, HEADERS, sendTurn } from "../../constants";
+import PlayerControls from "../../components/GameView/PlayerControls";
 
 export const ConnectFour = () => {
     const dispatch = useDispatch();
@@ -145,22 +146,25 @@ export const ConnectFour = () => {
     };
 
     return (
-        <Segment padded centered>
-            <ActionCable
-                channel={{ channel: "TurnsChannel", game_id: activeGameID }}
-                onReceived={handleReceivedTurn}
-                onConnected={() => console.log("C4 Turn Channel Connected")}
-                onDisconnected={() => console.log("C4 Turn Channel DCed")}
-            />
-            {headerSection()}
-            {/* <h1>
+        <Segment.Group>
+            <Segment padded centered>
+                <ActionCable
+                    channel={{ channel: "TurnsChannel", game_id: activeGameID }}
+                    onReceived={handleReceivedTurn}
+                    onConnected={() => console.log("C4 Turn Channel Connected")}
+                    onDisconnected={() => console.log("C4 Turn Channel DCed")}
+                />
+                {headerSection()}
+                {/* <h1>
                 {substituteIcon(pieceSwitch(turn), "big")}
                 {myTurn() ? " True" : " False"}
                 
             </h1> */}
 
-            <div className="boardbox">{drawGrid()}</div>
-        </Segment>
+                <div className="boardbox">{drawGrid()}</div>
+            </Segment>
+            <PlayerControls />
+        </Segment.Group>
     );
 };
 

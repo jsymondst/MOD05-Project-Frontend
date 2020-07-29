@@ -2,6 +2,7 @@ import React from "react";
 import { API_ROOT, HEADERS } from "../../constants";
 import { Card, Button, ButtonGroup } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 
 import { join } from "../../features/activeGame/activeGameSlice";
 
@@ -14,6 +15,9 @@ const GameListing = (props) => {
         game_type,
         closed,
     } = props.game;
+
+    const formattedCreationTime = moment(created_at).format("DD/MM/YY h:mm a");
+
     const dispatch = useDispatch();
 
     const handleDelete = () => {
@@ -40,7 +44,7 @@ const GameListing = (props) => {
         <Card fluid>
             <Card.Content>
                 <Card.Header>{name}</Card.Header>
-                <Card.Meta>created_at:{created_at}</Card.Meta>
+                <Card.Meta>created: {formattedCreationTime}</Card.Meta>
                 <Card.Description>ID: {id}</Card.Description>
                 <Card.Description>
                     Connected players: {connection_count}
