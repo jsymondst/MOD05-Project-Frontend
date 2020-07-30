@@ -15,6 +15,7 @@ import {
     connectFourReset,
     selectConnectFourGrid,
     selectConnectFourTurn,
+    selectConnectFourWinner,
 } from "./connectFourSlice";
 
 import {
@@ -32,7 +33,7 @@ export const ConnectFour = () => {
     const turn = useSelector(selectConnectFourTurn);
     const activeGameID = useSelector(selectActiveGameID);
     const playerNumber = useSelector(selectPlayerNumber);
-    const [winner, setWinner] = useState(null);
+    const winner = useSelector(selectConnectFourWinner);
 
     const iconDetails = {
         "1": { color: "yellow", icon: "circle" },
@@ -88,7 +89,7 @@ export const ConnectFour = () => {
                 key={`${posX}, ${posY}`}
                 onClick={assignTileHandler()}
             >
-                {substituteIcon(piece, "huge")}
+                {piece !== "blank" ? substituteIcon(piece, "huge") : null}
             </div>
         );
     };

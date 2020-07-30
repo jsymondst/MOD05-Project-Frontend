@@ -6,21 +6,31 @@ export const connectFourSlice = createSlice({
     initialState: {
         grid: emptyGrid,
         turn: "1",
+        winner: null,
     },
     reducers: {
         connectFourPlace: (state, action) => {
             const { columnIndex, piece } = action.payload;
             const turnSwitch = { red: "1", yellow: "2" };
             const oldColumn = state.grid[columnIndex];
-            let newColumn = oldColumn.filter((space) => space !== "");
+            let newColumn = oldColumn.filter((space) => space !== "blank");
+            let posY = 0;
+            let didPlace = false;
             if (newColumn.length < 6) {
                 newColumn.push(piece);
+                posY = newColumn.length - 1;
+                didPlace = true;
             }
             while (newColumn.length < 6) {
-                newColumn.push("");
+                newColumn.push("blank");
             }
 
             state.grid[columnIndex] = newColumn;
+
+            const posX = columnIndex;
+
+            state.winner = checkForWins(state.grid, posY, posX);
+
             state.turn = turnSwitch[piece];
         },
         connectFourReset: (state) => {
@@ -34,8 +44,72 @@ export const { connectFourPlace, connectFourReset } = connectFourSlice.actions;
 
 export const selectConnectFourGrid = (state) => state.connectFour.grid;
 export const selectConnectFourTurn = (state) => state.connectFour.turn;
+export const selectConnectFourWinner = (state) => state.connectFour.winner;
 
 export default connectFourSlice.reducer;
+
+const checkForWins = (grid, posY, posX) => {
+    const latestPiece = grid[posX][posY];
+
+    const fourPieces = `${latestPiece}${latestPiece}${latestPiece}${latestPiece}`;
+
+    const thisColumn = grid[posX];
+    const thisColumnString = thisColumn.join("");
+
+    // if (thisColumnString.split(fourPieces).length() < 1) {
+    //     return latestPiece;
+    // }
+
+    const thisRow = grid.map((column) => column[posY]);
+    const thisRowString = thisRow.join("");
+
+    // console.log(fourPieces);
+    // console.log(thisRow);
+    // console.log(thisRowString);
+    // console.log(thisRowString.split(fourPieces));
+
+    // if (thisRowString.split(fourPieces).length() < 1) {
+    //     return latestPiece;
+    // }
+
+    const leftDiagonal = [];
+    for (let i = -5; i <= 5; i++) {
+        if (grid[posX + i]) {
+            leftDiagonal.push(grid[posX + i][posY + i]);
+        }
+    }
+
+    const rightDiagonal = [];
+    for (let i = -5; i <= 5; i++) {
+        if (grid[posX - i]) {
+            rightDiagonal.push(grid[posX - i][posY + i]);
+        }
+    }
+
+    const allLines = [thisRow, thisColumn, leftDiagonal, rightDiagonal];
+    console.log(allLines);
+
+    if (
+        allLines.some((line) => {
+            let lineString = line.join("");
+            let lineStringSplit = lineString.split(fourPieces);
+
+            // console.log(line);
+            // console.log(lineString);
+            // console.log(lineStringSplit);
+            // console.log(lineStringSplit.length);
+
+            if (lineStringSplit.length > 1) {
+                return true;
+            }
+        })
+    ) {
+        console.log(`${latestPiece} wins!`);
+        return latestPiece;
+    }
+
+    return null;
+};
 
 // const emptyGrid = [
 //     ["", "", "", "", "", ""],
