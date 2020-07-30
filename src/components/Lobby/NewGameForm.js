@@ -35,7 +35,7 @@ const NewGameForm = () => {
                     <label>Game Type</label>
                     <Dropdown
                         label={"Game Type"}
-                        labelled
+                        labeled
                         options={gameOptions}
                         defaultValue="tictactoe"
                         selection
@@ -61,7 +61,7 @@ const NewGameForm = () => {
 
                 {typeBox()}
                 <br />
-                <Form.Button type="submit" fluid>
+                <Form.Button type="submit" fluid color={"blue"}>
                     Create Game
                 </Form.Button>
             </Form>

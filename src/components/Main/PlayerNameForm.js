@@ -5,13 +5,15 @@ import { Button, Icon, Input } from "semantic-ui-react";
 import {
     selectPlayerName,
     setPlayerName,
+    selectActiveGameID,
 } from "../../features/activeGame/activeGameSlice";
 
-import { randomAnimal } from "../../constants";
+import { randomAnimal, sendMessage } from "../../constants";
 const faker = require("faker/locale/en_GB");
 
 const PlayerNameForm = () => {
     const playerName = useSelector(selectPlayerName);
+    const activeGameID = useSelector(selectActiveGameID);
     const dispatch = useDispatch();
 
     const [editable, setEditable] = useState();
@@ -30,6 +32,14 @@ const PlayerNameForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const message = {
+            username: "system",
+            message_type: "namechange",
+            text: `${playerName} changed their name to ${newPlayerName}`,
+            gameID: activeGameID ? activeGameID : 1,
+        };
+        sendMessage(message);
+
         dispatch(setPlayerName(newPlayerName));
 
         setEditable(false);

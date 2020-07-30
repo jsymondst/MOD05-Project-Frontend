@@ -1,6 +1,6 @@
 import React from "react";
 import { API_ROOT, HEADERS } from "../../constants";
-import { Card, Button, ButtonGroup } from "semantic-ui-react";
+import { Card, Button, ButtonGroup, Icon } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 
@@ -53,20 +53,22 @@ const GameListing = (props) => {
                     Type: {gameTypesKey[game_type]}
                 </Card.Description>
                 <br />
-                <Button.Group widths="2">
+                <Button.Group fluid widths={2} icon>
                     <Button
                         onClick={handleJoin}
                         color="green"
                         disabled={closed}
                     >
-                        Join Game
+                        <Icon name="sign in" />
+                        {" Join Game"}
                     </Button>
                     <Button
                         onClick={handleDelete}
                         color="red"
                         disabled={connection_count > 0}
                     >
-                        Delete Game
+                        {"Delete Game "}
+                        <Icon name="ban" />
                     </Button>
                 </Button.Group>
             </Card.Content>

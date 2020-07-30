@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Segment, Divider, Comment } from "semantic-ui-react";
+import {
+    Segment,
+    Divider,
+    Comment,
+    Button,
+    Icon,
+    Checkbox,
+    Dropdown,
+} from "semantic-ui-react";
 import { ActionCableConsumer } from "react-actioncable-provider";
 import moment from "moment";
 
-import { API_ROOT, HEADERS } from "../../constants";
+import { API_ROOT, HEADERS, sendMessage } from "../../constants";
 
 import {
     selectActiveGameID,
@@ -17,11 +25,46 @@ export const InGameChat = (props) => {
     const activeGameID = useSelector(selectActiveGameID);
     const gameID = props.gameID ? props.gameID : activeGameID;
     const name = useSelector(selectPlayerName);
+    const [filters, setFilters] = useState([]);
 
     const [messages, setMessages] = useState([]);
 
     const handleReceivedMessage = (response) => {
         setMessages([...messages, response]);
+    };
+
+    const toggleFilter = (value) => {
+        if (filters.includes(value)) {
+            let newFilters = filters.filter((category) => category !== value);
+            setFilters(newFilters);
+        } else {
+            let newFilters = [...filters, value];
+            setFilters(newFilters);
+        }
+    };
+
+    const filterToggle = (value) => {
+        return <Checkbox toggle checked={!filters.includes(value)} />;
+    };
+
+    const filtersDropdown = () => {
+        const messageTypes = ["connection", "namechange", "chat", "turn"];
+        return (
+            <Dropdown text="Chat filters" multiple floating="right">
+                <Dropdown.Menu>
+                    {messageTypes.map((messageType) => {
+                        return (
+                            <Dropdown.Item
+                                onClick={() => toggleFilter(messageType)}
+                            >
+                                {filterToggle(messageType)}
+                                {` ${messageType}`}
+                            </Dropdown.Item>
+                        );
+                    })}
+                </Dropdown.Menu>
+            </Dropdown>
+        );
     };
 
     const handleConnected = () => {
@@ -47,7 +90,7 @@ export const InGameChat = (props) => {
         const { username, created_at, text } = message;
         const messageTime = moment(created_at).format("h:mm a");
         return (
-            <Comment key={index}>
+            <Comment key={message.id}>
                 <Comment.Content>
                     <div style={{ float: "left" }}>
                         <Comment.Author>{username}</Comment.Author>
@@ -60,6 +103,12 @@ export const InGameChat = (props) => {
                     </div>
                 </Comment.Content>
             </Comment>
+        );
+    };
+
+    const filteredMessages = () => {
+        return messages.filter(
+            (message) => !filters.includes(message.message_type)
         );
     };
 
@@ -80,12 +129,13 @@ export const InGameChat = (props) => {
                     })}
                 </ul> */}
                 <Comment.Group>
-                    {messages.map((message, index) => {
+                    {filteredMessages().map((message, index) => {
                         return drawMessage(message, index);
                     })}
                 </Comment.Group>
                 <Divider />
                 <NewMessageForm activeGameID={gameID} />
+                {filtersDropdown()}
             </Segment>
         </div>
     );

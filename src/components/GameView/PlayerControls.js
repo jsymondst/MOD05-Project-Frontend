@@ -47,7 +47,7 @@ const PlayerControls = (props) => {
             activeGameID,
             action,
             "controls",
-            `Randomly selected player ${playerNumber}`
+            `${playerName} randomly selected player ${playerNumber}`
         );
     };
 

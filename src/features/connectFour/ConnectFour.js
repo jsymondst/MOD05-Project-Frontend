@@ -152,6 +152,7 @@ export const ConnectFour = () => {
 
     return (
         <Segment.Group>
+            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
             <Segment padded centered>
                 <ActionCable
                     channel={{ channel: "TurnsChannel", game_id: activeGameID }}
@@ -160,15 +161,8 @@ export const ConnectFour = () => {
                     onDisconnected={() => console.log("C4 Turn Channel DCed")}
                 />
                 {headerSection()}
-                {/* <h1>
-                {substituteIcon(pieceSwitch(turn), "big")}
-                {myTurn() ? " True" : " False"}
-                
-            </h1> */}
-
                 <div className="boardbox">{drawGrid()}</div>
             </Segment>
-            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
         </Segment.Group>
     );
 };

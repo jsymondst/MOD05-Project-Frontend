@@ -53,6 +53,7 @@ export const NewMessageForm = (props) => {
                     action={{
                         icon: "send",
                         type: "submit",
+                        color: "blue",
                     }}
                     actionPosition="left"
                 ></Input>

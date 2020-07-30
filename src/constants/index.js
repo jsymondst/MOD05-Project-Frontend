@@ -22,7 +22,21 @@ export const sendTurn = (gameID, turn, gameType, message) => {
     // .then(console.log);
 };
 
-export const rubyDateToHhMm = (rubyDateString) => {};
+export const sendMessage = ({ gameID, text, message_type, username }) => {
+    fetch(`${API_ROOT}/messages`, {
+        method: "POST",
+        headers: HEADERS,
+        body: JSON.stringify({
+            // message: { text: messageBody, game_id: activeGameID , message_type:"chat", username:playerName},
+            message: {
+                text: text,
+                game_id: gameID,
+                message_type: message_type,
+                username: username,
+            },
+        }),
+    });
+};
 
 export const randomAnimal = () => {
     const animals = [

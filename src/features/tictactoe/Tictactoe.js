@@ -193,6 +193,7 @@ export const Tictactoe = (props) => {
 
     return (
         <Segment.Group centered>
+            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
             <Segment>
                 <ActionCable
                     channel={{ channel: "TurnsChannel", game_id: activeGameID }}
@@ -207,7 +208,6 @@ export const Tictactoe = (props) => {
                     <div className={"board"}>{drawGrid()}</div>
                 </div>
             </Segment>
-            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
         </Segment.Group>
     );
 };
