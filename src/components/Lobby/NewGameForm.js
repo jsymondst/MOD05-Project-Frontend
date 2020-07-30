@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { API_ROOT, HEADERS } from "../../constants";
-import {
-    Segment,
-    Input,
-    Dropdown,
-    Button,
-    Select,
-    Label,
-    Form,
-} from "semantic-ui-react";
+import { Segment, Input, Dropdown, Form } from "semantic-ui-react";
 
 const NewGameForm = () => {
     const [name, setName] = useState();

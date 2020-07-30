@@ -1,18 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LobbyConnectionHolder from "../Lobby/LobbyConnectionHolder";
 import GameView from "../GameView/GameView";
 import Header from "./Header";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import {
-    selectPlayerName,
-    setPlayerName,
-    selectActiveGameID,
-} from "../../features/activeGame/activeGameSlice";
-
-import { randomAnimal } from "../../constants";
-const faker = require("faker/locale/en_GB");
+import { selectActiveGameID } from "../../features/activeGame/activeGameSlice";
 
 const Main = () => {
     const activeGameID = useSelector(selectActiveGameID);

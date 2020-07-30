@@ -29,6 +29,11 @@ export const Tictactoe = (props) => {
     const playerNumber = useSelector(selectPlayerNumber);
     const [winner, setWinner] = useState(null);
 
+    const iconDetails = {
+        "1": { color: "blue", icon: "cancel" },
+        "2": { color: "red", icon: "circle outline" },
+    };
+
     const drawGrid = () => {
         return grid.map((row, posY) => {
             return row.map((piece, posX) => {
@@ -202,7 +207,7 @@ export const Tictactoe = (props) => {
                     <div className={"board"}>{drawGrid()}</div>
                 </div>
             </Segment>
-            <PlayerControls myTurn={myTurn()} />
+            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
         </Segment.Group>
     );
 };

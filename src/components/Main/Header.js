@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <div className="navbar">
             {/* <Image src={BHGames} width="60%" centered /> */}
-            <Grid verticalAlign={"middle"} centered>
+            <Grid verticalAlign={"middle"} centered stackable>
                 <Grid.Row>
                     <Grid.Column width={3}>
                         <PlayerNameForm />

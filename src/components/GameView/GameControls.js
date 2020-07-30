@@ -11,16 +11,7 @@ import {
     selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 import { ActionCableConsumer } from "react-actioncable-provider";
-import {
-    Button,
-    Card,
-    Segment,
-    CardContent,
-    Icon,
-    Divider,
-    ButtonGroup,
-    Header,
-} from "semantic-ui-react";
+import { Button, Card, Icon } from "semantic-ui-react";
 
 import { connectFourReset } from "../../features/connectFour/connectFourSlice";
 import { tictactoeReset } from "../../features/tictactoe/tictactoeSlice";
@@ -157,17 +148,6 @@ const GameControls = () => {
         return (
             <>
                 <Card.Content>
-                    <Button.Group floated="right">
-                        <Button onClick={handleCloseGame} color="blue">
-                            Close game
-                        </Button>
-                        <Button onClick={handleNewGame} color="violet">
-                            New Game
-                        </Button>
-                        <Button onClick={handleLeave} color="orange">
-                            Leave Game
-                        </Button>
-                    </Button.Group>
                     <Card.Header floated="left">{gameStatus.name}</Card.Header>
                     <Card.Meta>game #{activeGameID}</Card.Meta>
                     <Card.Description floated="left">
@@ -176,6 +156,26 @@ const GameControls = () => {
                     <Card.Description floated="left">
                         Closed: {gameStatus.closed ? "True" : "False"}
                     </Card.Description>
+                </Card.Content>
+                <Card.Content centered>
+                    {/* <Segment fluid basic centered> */}
+                    <Button.Group centered icon>
+                        <Button onClick={handleCloseGame} color="blue">
+                            <Icon
+                                name={gameStatus.closed ? "unlock" : "lock"}
+                            />
+                            {gameStatus.closed ? " Unlock Game" : " Lock Game"}
+                        </Button>
+                        <Button onClick={handleNewGame} color="violet">
+                            <Icon name={"refresh"} />
+                            {" New Game"}
+                        </Button>
+                        <Button onClick={handleLeave} color="red">
+                            <Icon name={"sign out"} />
+                            {" Leave Game"}
+                        </Button>
+                    </Button.Group>
+                    {/* </Segment> */}
                 </Card.Content>
             </>
         );

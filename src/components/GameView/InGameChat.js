@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Segment, Divider, Comment } from "semantic-ui-react";
-import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
+import { ActionCableConsumer } from "react-actioncable-provider";
 import moment from "moment";
 
 import { API_ROOT, HEADERS } from "../../constants";
@@ -22,7 +22,6 @@ export const InGameChat = (props) => {
 
     const handleReceivedMessage = (response) => {
         setMessages([...messages, response]);
-        console.log(moment(response.created_at));
     };
 
     const handleConnected = () => {
@@ -44,11 +43,11 @@ export const InGameChat = (props) => {
 
     // useEffect(() => {}, [messages]);
 
-    const drawMessage = (message) => {
+    const drawMessage = (message, index) => {
         const { username, created_at, text } = message;
         const messageTime = moment(created_at).format("h:mm a");
         return (
-            <Comment>
+            <Comment key={index}>
                 <Comment.Content>
                     <div style={{ float: "left" }}>
                         <Comment.Author>{username}</Comment.Author>
@@ -81,8 +80,8 @@ export const InGameChat = (props) => {
                     })}
                 </ul> */}
                 <Comment.Group>
-                    {messages.map((message) => {
-                        return drawMessage(message);
+                    {messages.map((message, index) => {
+                        return drawMessage(message, index);
                     })}
                 </Comment.Group>
                 <Divider />

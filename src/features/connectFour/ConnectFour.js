@@ -34,6 +34,11 @@ export const ConnectFour = () => {
     const playerNumber = useSelector(selectPlayerNumber);
     const [winner, setWinner] = useState(null);
 
+    const iconDetails = {
+        "1": { color: "yellow", icon: "circle" },
+        "2": { color: "red", icon: "circle" },
+    };
+
     const substituteIcon = (piece, size) => {
         const selectIcon = {
             red: <Icon name="circle" color="red" size={size} />,
@@ -163,7 +168,7 @@ export const ConnectFour = () => {
 
                 <div className="boardbox">{drawGrid()}</div>
             </Segment>
-            <PlayerControls />
+            <PlayerControls myTurn={myTurn()} iconDetails={iconDetails} />
         </Segment.Group>
     );
 };

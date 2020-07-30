@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Grid, Button, GridColumn } from "semantic-ui-react";
-import { ActionCable, ActionCableConsumer } from "react-actioncable-provider";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { ActionCableConsumer } from "react-actioncable-provider";
 
 import {
-    join,
-    leave,
     selectActiveGameID,
     selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 
 import InGameChat from "./InGameChat";
 import GameControls from "./GameControls";
-import TicTacToe, { Tictactoe } from "../../features/tictactoe/Tictactoe";
+import Tictactoe from "../../features/tictactoe/Tictactoe";
 import ConnectFour from "../../features/connectFour/ConnectFour";
 
 export const GameView = (props) => {

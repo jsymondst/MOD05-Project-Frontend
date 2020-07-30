@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { API_ROOT, sendTurn, HEADERS } from "../../constants";
+import React from "react";
+import { sendTurn } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-    leave,
     setPlayer,
     selectActiveGameID,
     selectPlayerNumber,
     selectPlayerName,
-    selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 
-import { Button, Card, Icon, Segment, Header } from "semantic-ui-react";
+import { Button, Icon, Segment } from "semantic-ui-react";
 
 const PlayerControls = (props) => {
     const dispatch = useDispatch();
@@ -55,22 +53,29 @@ const PlayerControls = (props) => {
 
     return playerNumber ? (
         <Segment centered>
-            <h3>{`Playing as ${playerNumber}`}</h3>
+            <h3>
+                {`Playing as `}
+                <Icon
+                    name={props.iconDetails[playerNumber].icon}
+                    color={props.iconDetails[playerNumber].color}
+                />
+            </h3>
         </Segment>
     ) : (
         <Segment>
             <div>
                 {/* <Header floated="left">{"Play as: "}</Header> */}
-                <div style={{ float: "left", "margin-right": "0.5em" }}>
+                <div style={{ float: "left", marginRight: "0.5em" }}>
                     <h3>{"Play as: "}</h3>
                 </div>
                 <div style={{ float: "left" }}>
-                    <Button.Group floated="left">
+                    <Button.Group floated="left" labeled icon width={2.5}>
                         <Button
                             onClick={() => assignPlayer(1)}
                             padded
-                            color="yellow"
+                            color={props.iconDetails[1].color}
                         >
+                            <Icon name={props.iconDetails[1].icon} />
                             Player 1
                         </Button>
                         <Button onClick={rollForTurns} color="green">
@@ -80,8 +85,9 @@ const PlayerControls = (props) => {
                         <Button
                             onClick={() => assignPlayer(2)}
                             padded
-                            color="red"
+                            color={props.iconDetails[2].color}
                         >
+                            <Icon name={props.iconDetails[2].icon} />
                             Player 2
                         </Button>
                     </Button.Group>
