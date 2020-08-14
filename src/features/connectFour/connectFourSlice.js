@@ -36,6 +36,7 @@ export const connectFourSlice = createSlice({
         connectFourReset: (state) => {
             state.grid = emptyGrid;
             state.turn = "1";
+            state.winner = null;
         },
     },
 });
@@ -54,23 +55,8 @@ const checkForWins = (grid, posY, posX) => {
     const fourPieces = `${latestPiece}${latestPiece}${latestPiece}${latestPiece}`;
 
     const thisColumn = grid[posX];
-    const thisColumnString = thisColumn.join("");
-
-    // if (thisColumnString.split(fourPieces).length() < 1) {
-    //     return latestPiece;
-    // }
 
     const thisRow = grid.map((column) => column[posY]);
-    const thisRowString = thisRow.join("");
-
-    // console.log(fourPieces);
-    // console.log(thisRow);
-    // console.log(thisRowString);
-    // console.log(thisRowString.split(fourPieces));
-
-    // if (thisRowString.split(fourPieces).length() < 1) {
-    //     return latestPiece;
-    // }
 
     const leftDiagonal = [];
     for (let i = -5; i <= 5; i++) {
@@ -87,18 +73,11 @@ const checkForWins = (grid, posY, posX) => {
     }
 
     const allLines = [thisRow, thisColumn, leftDiagonal, rightDiagonal];
-    console.log(allLines);
 
     if (
         allLines.some((line) => {
             let lineString = line.join("");
             let lineStringSplit = lineString.split(fourPieces);
-
-            // console.log(line);
-            // console.log(lineString);
-            // console.log(lineStringSplit);
-            // console.log(lineStringSplit.length);
-
             if (lineStringSplit.length > 1) {
                 return true;
             }
@@ -110,13 +89,3 @@ const checkForWins = (grid, posY, posX) => {
 
     return null;
 };
-
-// const emptyGrid = [
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-//     ["", "", "", "", "", ""],
-// ];
