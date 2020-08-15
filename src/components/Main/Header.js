@@ -7,15 +7,18 @@ import ConnectionTracker from "./ConnectionTracker";
 const Header = () => {
     return (
         <div className="navbar">
-            <Grid verticalAlign={"middle"} centered stackable>
+            <Grid verticalAlign={"middle"} centered>
                 <Grid.Row>
-                    <Grid.Column width={3}>
-                        <PlayerNameForm />
-                    </Grid.Column>
-                    <Grid.Column width={9}>
+                    <Grid.Column width={16} only="mobile" textAlign="center">
                         <Image src={BHGames} width="90%" centered />
                     </Grid.Column>
-                    <Grid.Column width={3}>
+                    <Grid.Column computer={4} tablet={4} mobile={8}>
+                        <PlayerNameForm />
+                    </Grid.Column>
+                    <Grid.Column width={7} only="tablet computer">
+                        <Image src={BHGames} width="90%" centered />
+                    </Grid.Column>
+                    <Grid.Column computer={4} tablet={4} mobile={8}>
                         <ConnectionTracker />
                     </Grid.Column>
                 </Grid.Row>

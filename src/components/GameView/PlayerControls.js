@@ -69,7 +69,7 @@ const PlayerControls = (props) => {
                     <h3>{"Play as: "}</h3>
                 </div>
                 <div style={{ float: "left" }}>
-                    <Button.Group floated="left" labeled icon width={2.5}>
+                    <Button.Group floated="left" labeled icon width={2}>
                         <Button
                             onClick={() => assignPlayer(1)}
                             padded

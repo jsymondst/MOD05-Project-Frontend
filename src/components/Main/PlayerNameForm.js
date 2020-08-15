@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Input } from "semantic-ui-react";
+import { Button, Input, Segment, Form, Header } from "semantic-ui-react";
 
 import {
     selectPlayerName,
@@ -47,21 +47,19 @@ const PlayerNameForm = () => {
 
     const staticName = () => {
         return (
-            <>
-                <h3>
-                    {`${playerName} `}
-                    <Button icon="edit" onClick={toggleEditable} basic />
-                </h3>
-            </>
+            <h3>
+                {`${playerName} `}
+                <Button icon="edit" onClick={toggleEditable} basic />
+            </h3>
         );
     };
 
     const editableName = () => {
         return (
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} centered>
                 <Input big value={newPlayerName} onChange={handleChange} />
                 <Button icon="edit" type="submit" basic></Button>
-            </form>
+            </Form>
         );
     };
 
@@ -71,10 +69,10 @@ const PlayerNameForm = () => {
     };
 
     return (
-        <div>
-            <h4>Connected as:</h4>
+        <Segment basic textAlign="center" fluid>
+            <Header as="h4">Connected as:</Header>
             {editable ? editableName() : staticName()}
-        </div>
+        </Segment>
     );
 };
 

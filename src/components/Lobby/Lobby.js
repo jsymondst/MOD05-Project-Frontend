@@ -49,14 +49,14 @@ const Lobby = () => {
                 onReceived={handleReceivedGame}
                 onConnected={handleGamesConnected}
             />
-            <Grid padded>
-                <Grid.Column width={5}>
+            <Grid padded centered>
+                <Grid.Column computer={5} tablet={7} mobile={16}>
                     <NewGameForm />
                 </Grid.Column>
-                <Grid.Column width={6}>
+                <Grid.Column computer={5} tablet={7} mobile={16}>
                     <GameList lobbyStatus={lobbyStatus} />
                 </Grid.Column>
-                <Grid.Column width={5}>
+                <Grid.Column computer={6} tablet={14} mobile={16}>
                     {/* <LobbyChat name={name} /> */}
                     <InGameChat gameID={1} />
                 </Grid.Column>
