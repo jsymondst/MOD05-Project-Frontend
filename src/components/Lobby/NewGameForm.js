@@ -47,8 +47,8 @@ const NewGameForm = () => {
     };
 
     return (
-        <Segment padded fluid textAlign="left">
-            <Form fluid onSubmit={handleSubmit}>
+        <Segment padded textAlign="left">
+            <Form onSubmit={handleSubmit}>
                 <h2>New Game:</h2>
                 <Form.Field>
                     <label>Game Name</label>

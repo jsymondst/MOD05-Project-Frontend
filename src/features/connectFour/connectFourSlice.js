@@ -15,11 +15,12 @@ export const connectFourSlice = createSlice({
             const oldColumn = state.grid[columnIndex];
             let newColumn = oldColumn.filter((space) => space !== "blank");
             let posY = 0;
-            let didPlace = false;
+            // let didPlace = false;
             if (newColumn.length < 6) {
                 newColumn.push(piece);
                 posY = newColumn.length - 1;
-                didPlace = true;
+                // didPlace = true;
+                state.turn = turnSwitch[piece];
             }
             while (newColumn.length < 6) {
                 newColumn.push("blank");
@@ -31,7 +32,7 @@ export const connectFourSlice = createSlice({
 
             state.winner = checkForWins(state.grid, posY, posX);
 
-            state.turn = turnSwitch[piece];
+            // state.turn = turnSwitch[piece];
         },
         connectFourReset: (state) => {
             state.grid = emptyGrid;

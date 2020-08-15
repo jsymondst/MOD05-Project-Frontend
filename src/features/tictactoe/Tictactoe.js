@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
-import { Icon, Button, Grid, Divider, Segment } from "semantic-ui-react";
+import { Icon, Segment } from "semantic-ui-react";
 
 import {
     place,
@@ -18,7 +18,7 @@ import {
 
 import { API_ROOT, HEADERS } from "../../constants";
 
-import styles from "./Tictactoe.module.css";
+// import styles from "./Tictactoe.module.css";
 import PlayerControls from "../../components/GameView/PlayerControls";
 
 export const Tictactoe = (props) => {
@@ -59,16 +59,11 @@ export const Tictactoe = (props) => {
     };
 
     const drawCell = (piece, posX, posY) => {
-        const selectIcon = {
-            X: <Icon name="cancel" color="blue" size="huge" />,
-            O: <Icon name="circle outline" color="red" size="huge" />,
-        };
-
-        const assignTileHandler = () => {
-            if (myTurn() && !winner) {
-                return () => handleTileClick(posX, posY);
-            }
-        };
+        // const assignTileHandler = () => {
+        //     if (myTurn() && !winner) {
+        //         return () => handleTileClick(posX, posY);
+        //     }
+        // };
 
         return (
             <div
@@ -106,14 +101,14 @@ export const Tictactoe = (props) => {
                 // check rows
                 grid[i][0] === grid[i][1] &&
                 grid[i][1] === grid[i][2] &&
-                grid[i][0] != ""
+                grid[i][0] !== ""
             ) {
                 winner = grid[i][0];
             } else if (
                 //check columns
                 grid[0][i] === grid[1][i] &&
                 grid[1][i] === grid[2][i] &&
-                grid[0][i] != ""
+                grid[0][i] !== ""
             ) {
                 winner = grid[0][i];
             }
@@ -122,13 +117,13 @@ export const Tictactoe = (props) => {
         if (
             grid[0][0] === grid[1][1] &&
             grid[1][1] === grid[2][2] &&
-            grid[0][0] != ""
+            grid[0][0] !== ""
         ) {
             winner = grid[1][1];
         } else if (
             grid[0][2] === grid[1][1] &&
             grid[1][1] === grid[2][0] &&
-            grid[0][0] != ""
+            grid[0][0] !== ""
         ) {
             winner = grid[1][1];
         }
@@ -160,7 +155,7 @@ export const Tictactoe = (props) => {
         console.table(response);
         // console.log("triggered.");
         const { turn } = response;
-        if (response.turn && response.turn.game_type == "tictactoe") {
+        if (response.turn && response.turn.game_type === "tictactoe") {
             const action = JSON.parse(turn.action);
             switch (action.action) {
                 case "place":

@@ -4,15 +4,13 @@ import {
     Segment,
     Divider,
     Comment,
-    Button,
-    Icon,
     Checkbox,
     Dropdown,
 } from "semantic-ui-react";
 import { ActionCableConsumer } from "react-actioncable-provider";
 import moment from "moment";
 
-import { API_ROOT, HEADERS, sendMessage } from "../../constants";
+import { API_ROOT, HEADERS } from "../../constants";
 
 import {
     selectActiveGameID,
@@ -50,12 +48,13 @@ export const InGameChat = (props) => {
     const filtersDropdown = () => {
         const messageTypes = ["connection", "namechange", "chat", "turn"];
         return (
-            <Dropdown text="Chat filters" multiple floating="right">
+            <Dropdown text="Chat filters" multiple floating>
                 <Dropdown.Menu>
-                    {messageTypes.map((messageType) => {
+                    {messageTypes.map((messageType, index) => {
                         return (
                             <Dropdown.Item
                                 onClick={() => toggleFilter(messageType)}
+                                key={index}
                             >
                                 {filterToggle(messageType)}
                                 {` ${messageType}`}
@@ -90,7 +89,7 @@ export const InGameChat = (props) => {
         const { username, created_at, text } = message;
         const messageTime = moment(created_at).format("h:mm a");
         return (
-            <Comment key={message.id}>
+            <Comment key={index}>
                 <Comment.Content>
                     <div style={{ float: "left" }}>
                         <Comment.Author>{username}</Comment.Author>
@@ -123,11 +122,6 @@ export const InGameChat = (props) => {
                 onConnected={handleConnected}
             />
             <Segment textAlign="left">
-                {/* <ul>
-                    {messages.map((message) => {
-                        return <li key={message.id}>{message.text}</li>;
-                    })}
-                </ul> */}
                 <Comment.Group>
                     {filteredMessages().map((message, index) => {
                         return drawMessage(message, index);

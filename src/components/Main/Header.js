@@ -1,13 +1,12 @@
 import React from "react";
 import BHGames from "../../assets/BHGamesHorse.png";
-import { Image, Grid, GridColumn } from "semantic-ui-react";
+import { Image, Grid } from "semantic-ui-react";
 import PlayerNameForm from "./PlayerNameForm";
 import ConnectionTracker from "./ConnectionTracker";
 
 const Header = () => {
     return (
         <div className="navbar">
-            {/* <Image src={BHGames} width="60%" centered /> */}
             <Grid verticalAlign={"middle"} centered stackable>
                 <Grid.Row>
                     <Grid.Column width={3}>

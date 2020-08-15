@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import { API_ROOT, HEADERS } from "../../constants";
-import { Button, Icon, Input } from "semantic-ui-react";
+import { Input } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 
-import {
-    leave,
-    setPlayer,
-    selectActiveGameID,
-    selectPlayerName,
-} from "../../features/activeGame/activeGameSlice";
+import { selectPlayerName } from "../../features/activeGame/activeGameSlice";
 
 export const NewMessageForm = (props) => {
     const playerName = useSelector(selectPlayerName);
@@ -20,14 +15,12 @@ export const NewMessageForm = (props) => {
 
     const handleSubmit = (e) => {
         const { activeGameID } = props;
-        const messageBody = `${playerName}: ${text}`;
         e.preventDefault();
         if (text !== "") {
             fetch(`${API_ROOT}/messages`, {
                 method: "POST",
                 headers: HEADERS,
                 body: JSON.stringify({
-                    // message: { text: messageBody, game_id: activeGameID , message_type:"chat", username:playerName},
                     message: {
                         text: text,
                         game_id: activeGameID,

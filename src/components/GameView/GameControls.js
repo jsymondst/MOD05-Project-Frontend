@@ -7,8 +7,6 @@ import {
     setPlayer,
     selectActiveGameID,
     selectPlayerNumber,
-    selectPlayerName,
-    selectActiveGameType,
 } from "../../features/activeGame/activeGameSlice";
 import { ActionCableConsumer } from "react-actioncable-provider";
 import { Button, Card, Icon } from "semantic-ui-react";
@@ -19,9 +17,9 @@ import { tictactoeReset } from "../../features/tictactoe/tictactoeSlice";
 const GameControls = () => {
     const dispatch = useDispatch();
     const playerNumber = useSelector(selectPlayerNumber);
-    const playerName = useSelector(selectPlayerName);
+    // const playerName = useSelector(selectPlayerName);
     const activeGameID = useSelector(selectActiveGameID);
-    const activeGameType = useSelector(selectActiveGameType);
+    // const activeGameType = useSelector(selectActiveGameType);
     const [gameStatus, setGameStatus] = useState({
         connections: 0,
         name: null,
@@ -31,39 +29,39 @@ const GameControls = () => {
         dispatch(leave());
     };
 
-    const assignPlayer = (newPlayerNumber) => {
-        dispatch(setPlayer(newPlayerNumber));
+    // const assignPlayer = (newPlayerNumber) => {
+    //     dispatch(setPlayer(newPlayerNumber));
 
-        const action = {
-            action: "chosePlayerNumber",
-            payload: newPlayerNumber,
-        };
+    //     const action = {
+    //         action: "chosePlayerNumber",
+    //         payload: newPlayerNumber,
+    //     };
 
-        sendTurn(
-            activeGameID,
-            action,
-            "controls",
-            `${playerName} chose to play as player ${newPlayerNumber}`
-        );
-    };
+    //     sendTurn(
+    //         activeGameID,
+    //         action,
+    //         "controls",
+    //         `${playerName} chose to play as player ${newPlayerNumber}`
+    //     );
+    // };
 
-    const rollForTurns = () => {
-        let playerNumber = Math.ceil(Math.random() * 2);
+    // const rollForTurns = () => {
+    //     let playerNumber = Math.ceil(Math.random() * 2);
 
-        dispatch(setPlayer(playerNumber));
+    //     dispatch(setPlayer(playerNumber));
 
-        const action = {
-            action: "chosePlayerNumber",
-            payload: playerNumber,
-        };
+    //     const action = {
+    //         action: "chosePlayerNumber",
+    //         payload: playerNumber,
+    //     };
 
-        sendTurn(
-            activeGameID,
-            action,
-            "controls",
-            `Randomly selected player ${playerNumber}`
-        );
-    };
+    //     sendTurn(
+    //         activeGameID,
+    //         action,
+    //         "controls",
+    //         `Randomly selected player ${playerNumber}`
+    //     );
+    // };
 
     const handleReceivedTurn = (response) => {
         console.log(response);
@@ -181,41 +179,41 @@ const GameControls = () => {
         );
     };
 
-    const drawChoosePlayerblock = () => {
-        return playerNumber ? (
-            <Card.Content>
-                <h3>{`Playing as ${playerNumber}`}</h3>
-            </Card.Content>
-        ) : (
-            <Card.Content>
-                <div style={{ float: "left", "margin-right": "0.5em" }}>
-                    <h3>{"Play as: "}</h3>
-                </div>
-                <div style={{ float: "left" }}>
-                    <Button.Group>
-                        <Button
-                            onClick={() => assignPlayer(1)}
-                            padded
-                            color="yellow"
-                        >
-                            Player 1
-                        </Button>
-                        <Button onClick={rollForTurns} color="green">
-                            <Icon name="random" />
-                            Random
-                        </Button>
-                        <Button
-                            onClick={() => assignPlayer(2)}
-                            padded
-                            color="red"
-                        >
-                            Player 2
-                        </Button>
-                    </Button.Group>
-                </div>
-            </Card.Content>
-        );
-    };
+    // const drawChoosePlayerblock = () => {
+    //     return playerNumber ? (
+    //         <Card.Content>
+    //             <h3>{`Playing as ${playerNumber}`}</h3>
+    //         </Card.Content>
+    //     ) : (
+    //         <Card.Content>
+    //             <div style={{ float: "left", "margin-right": "0.5em" }}>
+    //                 <h3>{"Play as: "}</h3>
+    //             </div>
+    //             <div style={{ float: "left" }}>
+    //                 <Button.Group>
+    //                     <Button
+    //                         onClick={() => assignPlayer(1)}
+    //                         padded
+    //                         color="yellow"
+    //                     >
+    //                         Player 1
+    //                     </Button>
+    //                     <Button onClick={rollForTurns} color="green">
+    //                         <Icon name="random" />
+    //                         Random
+    //                     </Button>
+    //                     <Button
+    //                         onClick={() => assignPlayer(2)}
+    //                         padded
+    //                         color="red"
+    //                     >
+    //                         Player 2
+    //                     </Button>
+    //                 </Button.Group>
+    //             </div>
+    //         </Card.Content>
+    //     );
+    // };
 
     return (
         <Card fluid>

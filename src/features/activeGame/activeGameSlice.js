@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const faker = require("faker/locale/en_GB");
+// const faker = require("faker/locale/en_GB");
 
 export const activeGameSlice = createSlice({
     name: "activeGame",

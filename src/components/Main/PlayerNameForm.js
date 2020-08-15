@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Icon, Input } from "semantic-ui-react";
+import { Button, Input } from "semantic-ui-react";
 
 import {
     selectPlayerName,
@@ -50,12 +50,7 @@ const PlayerNameForm = () => {
             <>
                 <h3>
                     {`${playerName} `}
-                    <Button
-                        icon="edit"
-                        onClick={toggleEditable}
-                        basic
-                        centered
-                    />
+                    <Button icon="edit" onClick={toggleEditable} basic />
                 </h3>
             </>
         );

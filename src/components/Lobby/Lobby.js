@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { ActionCableConsumer } from "react-actioncable-provider";
 import { Grid } from "semantic-ui-react";
-import { useSelector, useDispatch } from "react-redux";
-
-import {
-    join,
-    leave,
-    selectActiveGameID,
-    selectPlayerName,
-} from "../../features/activeGame/activeGameSlice";
 
 import { API_ROOT } from "../../constants";
 
 import NewGameForm from "./NewGameForm";
 import GameList from "./GameList";
 import InGameChat from "../GameView/InGameChat";
-import LobbyChat from "./LobbyChat";
 
 const Lobby = () => {
     const [lobbyStatus, setLobbyStatus] = useState({
         games: [],
         connections: 1,
     });
-
-    const activeGameID = useSelector(selectActiveGameID);
-    const name = useSelector(selectPlayerName);
 
     const fetchLobby = () => {
         fetch(`${API_ROOT}/games`)

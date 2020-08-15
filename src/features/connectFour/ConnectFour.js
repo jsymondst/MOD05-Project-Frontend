@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
-import {
-    Icon,
-    Button,
-    Grid,
-    Divider,
-    Segment,
-    Header,
-} from "semantic-ui-react";
+import { Icon, Segment } from "semantic-ui-react";
 
 import {
     connectFourPlace,
@@ -24,7 +17,7 @@ import {
     selectPlayerNumber,
 } from "../activeGame/activeGameSlice";
 
-import { API_ROOT, HEADERS, sendTurn } from "../../constants";
+import { sendTurn } from "../../constants";
 import PlayerControls from "../../components/GameView/PlayerControls";
 
 export const ConnectFour = () => {
@@ -120,7 +113,7 @@ export const ConnectFour = () => {
         console.table(response);
         // console.log("triggered.");
         const { turn } = response;
-        if (response.turn && response.turn.game_type == "connectFour") {
+        if (response.turn && response.turn.game_type === "connectFour") {
             const action = JSON.parse(turn.action);
             switch (action.action) {
                 case "place":
