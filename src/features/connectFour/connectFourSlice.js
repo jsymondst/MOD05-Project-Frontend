@@ -78,10 +78,14 @@ const checkForWins = (grid, posY, posX) => {
     if (
         allLines.some((line) => {
             let lineString = line.join("");
-            let lineStringSplit = lineString.split(fourPieces);
-            if (lineStringSplit.length > 1) {
-                return true;
-            }
+            return lineString.includes(fourPieces);
+
+            // let lineStringSplit = lineString.split(fourPieces);
+            // if (lineStringSplit.length > 1) {
+            //     return true;
+            // } else {
+            //     return false;
+            // }
         })
     ) {
         console.log(`${latestPiece} wins!`);

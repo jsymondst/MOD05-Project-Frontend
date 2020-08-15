@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCable } from "react-actioncable-provider";
 import { Icon, Segment } from "semantic-ui-react";
@@ -8,6 +8,7 @@ import {
     tictactoeReset,
     selectTttGrid,
     selectTttTurn,
+    selectTttWinner,
 } from "./tictactoeSlice";
 
 import {
@@ -25,9 +26,10 @@ export const Tictactoe = (props) => {
     const grid = useSelector(selectTttGrid);
     const dispatch = useDispatch();
     const turn = useSelector(selectTttTurn);
+    const winner = useSelector(selectTttWinner);
     const activeGameID = useSelector(selectActiveGameID);
     const playerNumber = useSelector(selectPlayerNumber);
-    const [winner, setWinner] = useState(null);
+    // const [winner, setWinner] = useState(null);
 
     const iconDetails = {
         "1": { color: "blue", icon: "cancel" },
@@ -94,48 +96,8 @@ export const Tictactoe = (props) => {
         // .then(console.log);
     };
 
-    const checkForWins = () => {
-        let winner = null;
-        for (let i = 0; i <= 2; i++) {
-            if (
-                // check rows
-                grid[i][0] === grid[i][1] &&
-                grid[i][1] === grid[i][2] &&
-                grid[i][0] !== ""
-            ) {
-                winner = grid[i][0];
-            } else if (
-                //check columns
-                grid[0][i] === grid[1][i] &&
-                grid[1][i] === grid[2][i] &&
-                grid[0][i] !== ""
-            ) {
-                winner = grid[0][i];
-            }
-        }
-        //check diagonals
-        if (
-            grid[0][0] === grid[1][1] &&
-            grid[1][1] === grid[2][2] &&
-            grid[0][0] !== ""
-        ) {
-            winner = grid[1][1];
-        } else if (
-            grid[0][2] === grid[1][1] &&
-            grid[1][1] === grid[2][0] &&
-            grid[0][0] !== ""
-        ) {
-            winner = grid[1][1];
-        }
-        return winner;
-    };
-
-    useEffect(() => {
-        setWinner(checkForWins());
-    }, [grid]);
-
     const handleTileClick = (posX, posY) => {
-        if (myTurn()) {
+        if (!winner && myTurn()) {
             const payload = {
                 posX,
                 posY,
