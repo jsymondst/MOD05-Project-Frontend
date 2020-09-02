@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This is the React Frontend for my online games platform, [Black Horse Games](https://black-horse-games.netlify.app/)
 
-## Available Scripts
+## Concept
 
-In the project directory, you can run:
+Black Horse Games is a multiplayer games platform where users can play games with friends over the web. It has in-game and lobby chat and 2 different game types (tic-tac-toe and connect four). It's responsively styled to display well on desktops, mobiles and tablets.
 
-### `yarn start`
+[Demo link](https://www.youtube.com/watch?v=RVxXg_gi2ts&feature=youtu.be)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[Rails Back End Link](https://github.com/jsymondst/MOD05-Project-Backend)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Overall Structure
 
-### `yarn test`
+The app has 3 main components:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   The Header bar
+-   The Lobby View, visible when you first connect
+-   The Game view, visible when you're connected to a game.
 
-### `yarn build`
+The application (username and game connection status) and game (board/turn state) is managed using Redux, with separate slices for each.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app is styled using Semantic UI. Mostly because of familiarity, but also because I like its general aesthetic and icons.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### The Header
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+On the left, the header shows the user's randomly-assigned name, with a simple form to change the name if desired. On the right, it shows the number of users currently connected, tracked on the server and refreshed with the lobby.
 
-### `yarn eject`
+### The Lobby
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The Lobby has 3 main parts:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-   The 'New Game' Form, where users can choose the game type, set a name and create a game.
+-   The Game List, where users can see currently active games, as well as who's connected to them.
+-   The lobby chat window.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### The Game View
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Once a user connects to a game, they're presented with the game view, which also has three main parts:
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+-   The Game board, with controls to choose whether to play first or second
+-   The Game controls component, which shows the game name, connection status, and has the controls to lock, restart or leave the game.
+-   The in game chat window.
