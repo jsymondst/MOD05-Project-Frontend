@@ -9,7 +9,7 @@ import {
 } from "../../features/activeGame/activeGameSlice";
 
 import { randomAnimal, sendMessage } from "../../constants";
-const faker = require("faker/locale/en_GB");
+// const faker = require("faker/locale/en_GB");
 
 const PlayerNameForm = () => {
     const playerName = useSelector(selectPlayerName);
@@ -20,7 +20,9 @@ const PlayerNameForm = () => {
     const [newPlayerName, setNewPlayerName] = useState(playerName);
 
     const setName = () => {
-        const name = `${faker.hacker.adjective()}-${randomAnimal()}`;
+        // const name = `${faker.hacker.adjective()}-${randomAnimal()}`;
+        const name = `anonymous-${randomAnimal()}`;
+
         dispatch(setPlayerName(name));
     };
 
