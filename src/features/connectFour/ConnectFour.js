@@ -42,7 +42,8 @@ export const ConnectFour = () => {
     };
 
     const myTurn = () => {
-        return Number(turn) === Number(playerNumber);
+        return playerNumber === -1 ? true : (Number(turn) === Number(playerNumber))
+        // return Number(turn) === Number(playerNumber);
     };
 
     const drawGrid = () => {
@@ -96,17 +97,26 @@ export const ConnectFour = () => {
     };
 
     const handleTileClick = (columnIndex) => {
-        const payload = {
-            columnIndex,
-            piece: pieceSwitch(turn),
-        };
-        // dispatch(connectFourPlace(payload));
+        if (!winner) {
 
-        const action = {
-            action: "place",
-            payload,
-        };
-        sendTurn(activeGameID, action, "connectFour", null);
+
+
+            const payload = {
+                columnIndex,
+                piece: pieceSwitch(turn),
+            };
+
+            if (playerNumber === -1) {
+                dispatch(connectFourPlace(payload));
+            } else {
+                const action = {
+                    action: "place",
+                    payload,
+                };
+                sendTurn(activeGameID, action, "connectFour", null);
+            }
+            
+        }
     };
 
     const handleReceivedTurn = (response) => {

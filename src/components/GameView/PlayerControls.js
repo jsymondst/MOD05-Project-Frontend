@@ -71,21 +71,11 @@ const PlayerControls = (props) => {
 
         )
 
-
     }
 
 
 
     return playerNumber ? (
-        // <Segment centered>
-        //     <h3>
-        //         {`Playing as `}
-        //         <Icon
-        //             name={props.iconDetails[playerNumber].icon}
-        //             color={props.iconDetails[playerNumber].color}
-        //         />
-        //     </h3>
-        // </Segment>
         playerTracker()
     ) : (
         <Segment>
