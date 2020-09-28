@@ -25,11 +25,17 @@ const PlayerControls = (props) => {
             payload: newPlayerNumber,
         };
 
+        const message = (newPlayerNumber === -1) ? (
+            `${playerName} is playing on one screen.`
+        ) :( 
+            `${playerName} chose to play as player ${newPlayerNumber}.`
+        )
+
         sendTurn(
             activeGameID,
             action,
             "controls",
-            `${playerName} chose to play as player ${newPlayerNumber}`
+            message
         );
     };
 
