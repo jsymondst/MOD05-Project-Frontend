@@ -51,8 +51,15 @@ const PlayerControls = (props) => {
         );
     };
 
-    return playerNumber ? (
-        <Segment centered>
+    const playerTracker = () => {
+        return playerNumber === -1  ? (
+            <Segment centered>
+                <h3>
+                    {'Single Screen Play'}
+                </h3>
+            </Segment>
+        ) : (
+            <Segment centered>
             <h3>
                 {`Playing as `}
                 <Icon
@@ -61,6 +68,25 @@ const PlayerControls = (props) => {
                 />
             </h3>
         </Segment>
+
+        )
+
+
+    }
+
+
+
+    return playerNumber ? (
+        // <Segment centered>
+        //     <h3>
+        //         {`Playing as `}
+        //         <Icon
+        //             name={props.iconDetails[playerNumber].icon}
+        //             color={props.iconDetails[playerNumber].color}
+        //         />
+        //     </h3>
+        // </Segment>
+        playerTracker()
     ) : (
         <Segment>
             <div>
@@ -90,6 +116,15 @@ const PlayerControls = (props) => {
                             <Icon name={props.iconDetails[2].icon} />
                             Player 2
                         </Button>
+                        <Button
+                            onClick={() => assignPlayer(-1)}
+                            padded
+                            color="purple"
+                        >
+                            <Icon name="desktop" />
+                            Single Screen Play
+                        </Button>
+                        
                     </Button.Group>
                 </div>
             </div>
