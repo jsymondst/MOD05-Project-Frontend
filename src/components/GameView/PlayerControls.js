@@ -25,11 +25,17 @@ const PlayerControls = (props) => {
             payload: newPlayerNumber,
         };
 
+        const message = (newPlayerNumber === -1) ? (
+            `${playerName} is playing on one screen.`
+        ) :( 
+            `${playerName} chose to play as player ${newPlayerNumber}.`
+        )
+
         sendTurn(
             activeGameID,
             action,
             "controls",
-            `${playerName} chose to play as player ${newPlayerNumber}`
+            message
         );
     };
 
@@ -51,8 +57,15 @@ const PlayerControls = (props) => {
         );
     };
 
-    return playerNumber ? (
-        <Segment centered>
+    const playerTracker = () => {
+        return playerNumber === -1  ? (
+            <Segment centered>
+                <h3>
+                    {'Single Screen Play'}
+                </h3>
+            </Segment>
+        ) : (
+            <Segment centered>
             <h3>
                 {`Playing as `}
                 <Icon
@@ -61,6 +74,15 @@ const PlayerControls = (props) => {
                 />
             </h3>
         </Segment>
+
+        )
+
+    }
+
+
+
+    return playerNumber ? (
+        playerTracker()
     ) : (
         <Segment>
             <div>
@@ -90,6 +112,15 @@ const PlayerControls = (props) => {
                             <Icon name={props.iconDetails[2].icon} />
                             Player 2
                         </Button>
+                        <Button
+                            onClick={() => assignPlayer(-1)}
+                            padded
+                            color="purple"
+                        >
+                            <Icon name="desktop" />
+                            Single Screen Play
+                        </Button>
+                        
                     </Button.Group>
                 </div>
             </div>

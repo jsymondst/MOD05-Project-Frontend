@@ -53,11 +53,15 @@ export const Tictactoe = (props) => {
     };
 
     const myTurn = () => {
-        const key = {
-            X: 1,
-            O: 2,
-        };
-        return Number(playerNumber) === key[turn];
+        if (playerNumber === -1) {
+            return true
+        } else {
+            const key = {
+                X: 1,
+                O: 2,
+            };
+            return Number(playerNumber) === key[turn];
+        }
     };
 
     const drawCell = (piece, posX, posY) => {
