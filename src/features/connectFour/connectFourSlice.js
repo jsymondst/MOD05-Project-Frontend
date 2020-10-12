@@ -61,35 +61,40 @@ const checkForWins = (grid, posY, posX) => {
 
     const leftDiagonal = [];
     for (let i = -5; i <= 5; i++) {
-        if (grid[posX + i]) {
+        if (grid[posX + i]) { // check to see the column is present
             leftDiagonal.push(grid[posX + i][posY + i]);
         }
     }
 
     const rightDiagonal = [];
     for (let i = -5; i <= 5; i++) {
-        if (grid[posX - i]) {
+        if (grid[posX - i]) { // check to see the column is present
             rightDiagonal.push(grid[posX - i][posY + i]);
         }
     }
 
     const allLines = [thisRow, thisColumn, leftDiagonal, rightDiagonal];
 
+    //Check to see if there's a win in any of the lines
     if (
         allLines.some((line) => {
             let lineString = line.join("");
             return lineString.includes(fourPieces);
-
-            // let lineStringSplit = lineString.split(fourPieces);
-            // if (lineStringSplit.length > 1) {
-            //     return true;
-            // } else {
-            //     return false;
-            // }
         })
     ) {
         console.log(`${latestPiece} wins!`);
         return latestPiece;
+    }
+
+    //Check to see if the grid is full.
+    if (
+        grid.every(column => {
+            let upsideDownColumn = [...column].reverse() // check from the top of the column so we find empty spaces sooner
+            return upsideDownColumn.every(space => space != "blank") 
+        }
+            )
+    ) {
+        return "draw"
     }
 
     return null;
